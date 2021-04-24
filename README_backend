@@ -1,0 +1,13 @@
+postgresql:
+		// bash log-in to postgres user (on linux; idk on Windows)
+	sudo -i -u postgres
+		// start postgres command line tool
+	psql
+		// creates a database called "job_recommender"
+	create database job_recommender;
+		// connect to database "job_recommender"
+	\c job_recommender;
+		// Create jobs table
+	CREATE TABLE jobs ( id SERIAL, Job_Title VARCHAR(200), Company VARCHAR(200), Estimated_Salary VARCHAR(30), Location VARCHAR(50), Job_Description TEXT, PRIMARY KEY (id));
+		// Copy data from csv to postgres
+	COPY jobs(job_title, company, estimated_salary, location, job_description) FROM 'PATH/TO/jobData.csv' DELIMITER ',' CSV HEADER;
