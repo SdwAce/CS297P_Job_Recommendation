@@ -25,11 +25,9 @@ public class PostgresWithJDBCConnection {
         return returnStr + "]"; // add close bracket
     }
 
-    public static void viewTable(Connection con, List <JobEntry> jobEntryList, String[] keywords) throws SQLException {
-        String keywordSearchQuery = "SELECT * FROM jobs WHERE job_description LIKE ANY (ARRAY" + constructSQLKeywordArray(keywords, "%") + ")";
-        String keywordSortedQuery = "SELECT id, job_title, company, location, job_description, (array_length(x, 1) - 1) AS freq FROM jobs " +
-                                    "CROSS JOIN LATERAL regexp_split_to_array(job_description, '\\m"+ keywords[0] +"\\M') as t(x) " +
-                                    "where job_description like any (array['%"+ keywords[0] +"%']) order by freq desc";
+    public static void keywordSearch(Connection con, List <JobEntry> jobEntryList, String[] keywords, String field) throws SQLException {
+        String keywordSearchQuery = "SELECT * FROM jobs WHERE " + field +
+                " LIKE ANY (ARRAY" + constructSQLKeywordArray(keywords, "%") + ")";
         try (Statement stmt = con.createStatement()) {
             ResultSet rs = stmt.executeQuery(keywordSearchQuery);
             while (rs.next()) {
@@ -66,11 +64,12 @@ public class PostgresWithJDBCConnection {
 
     public static void main(String[] args) {
         List <JobEntry> jobEntryList = new ArrayList < > ();
-        String[] keywords = {"Haskell"}; // FOR NOW: keyword search from static array
+        String[] keywords = {"Cupertino"}; // FOR NOW: keyword search from static array
+        String field = "Location";
         // establishes database connection
         // auto closes connection and preparedStatement
         try (Connection conn = DriverManager.getConnection(DATABASE_URL, DATABASE_CLIENT, ClientPassword);) {
-            viewTable(conn, jobEntryList, keywords);
+            keywordSearch(conn, jobEntryList, keywords, field);
         } catch (SQLException e) {
             System.out.print(e.getMessage());
         } catch (Exception e) {
