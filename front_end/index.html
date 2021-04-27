@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html ng-app = "JobRecommendation">
+    <head>
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script type = "text/javascript" src="script.js"></script>
+    </head>
+    <body style="text-align:center;">
+        
+        <div ng-controller="SearchController">
+            <h1>Job Recommendation</h1>
+            <form class="search_tools">
+                <p>title</p>
+                <input type = "text" ng-model="title" ng-model-instant>
+                <br>
+                <p>location</p>
+                <input type = "text" ng-model="location">
+                <br>
+                <p>skill</p>
+                <input type = "text" ng-model="skill">
+                <br>
+                <p>company</p>
+                <input type = "text" ng-model="company">
+                <br>
+                <button class="search_button" ng-click="recommend()">
+                    Search
+                </button>
+            </form>
+            <table>
+                <tr>
+                    <th>title</th>
+                    <th>location</th>
+                    <th>skillset</th>
+                    <th>company</th>
+                </tr>
+                <tr ng-repeat="x in names">
+                    <td>{{x.title}}</td>
+                    <td>{{x.location}}</td>
+                    <td>{{x.skill}}</td>
+                    <td>{{x.company}}</td>
+                </tr>
+            </table>
+        </div>
+    </body>
+
+
+</html>
