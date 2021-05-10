@@ -1,0 +1,26 @@
+<html ng-app = "loginPage">
+    <head>
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.js"></script>
+        <script type = "text/javascript" src="loginController.js"></script>
+    </head>
+
+    <body>
+        <form>
+            <h1 style="text-align: center;">Login</h1>
+            <div ng-controller = "loginController" style="text-align:center;">
+                Username: 
+                <br>
+                <input ng-model="username">
+                <br>
+                Password: 
+                <br>
+                <input ng-model="password">
+                <br>
+                <br>
+                <button class = "login_button" ng-click="EnterSearchPage()">login</button>
+                <a href="./register.html" >Register</a>
+            </div>
+        </form>
+    </body>
+</html>

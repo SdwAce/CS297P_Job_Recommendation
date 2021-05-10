@@ -15,18 +15,18 @@ public class PostgresWithJDBCConnection {
     public static final String DATABASE_URL = "jdbc:postgresql://127.0.0.1:5432/job_recommender";
 
     public static String constructSQLKeywordArray(String[] keywords, String surround) {
-        String returnStr = "["; // add open bracket
+        String returnStr = "'"; // add open bracket
         for (int i = 0; i < keywords.length; i++) {
-            returnStr = returnStr + "'" + surround + keywords[i] + surround + "'"; // add keyword surrounded by % and '
+            returnStr = returnStr + keywords[i]; // add keyword surrounded by % and '
             if (i < keywords.length - 1) {
-                returnStr = returnStr + ","; // add comma, except for last element
+                returnStr = returnStr + " & "; // add comma, except for last element
             }
         }
-        return returnStr + "]"; // add close bracket
+        return returnStr + "'"; // add close bracket
     }
 
     public static void viewTable(Connection con, List <JobEntry> jobEntryList, String[] keywords) throws SQLException {
-        String keywordSearchQuery = "SELECT * FROM jobs WHERE job_description LIKE ANY (ARRAY" + constructSQLKeywordArray(keywords, "%") + ")";
+        String keywordSearchQuery = "SELECT * FROM jobs WHERE job_desc_tsv @@ to_tsquery(" + constructSQLKeywordArray(keywords, "") + ")";
 
         String keywordSortedQuery = "SELECT id, job_title, company, location, job_description, (array_length(x, 1) - 1) AS freq FROM jobs " +
                                     "CROSS JOIN LATERAL regexp_split_to_array(job_description, '\\m"+ keywords[0] +"\\M') as t(x) " +
