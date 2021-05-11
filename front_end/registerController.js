@@ -18,6 +18,7 @@ registerApp.controller("RegisterController",function($scope,$http)
         {
             console.log(response);
             alert(Object.values(response.data));
+            window.location.href = "login.html"
 
         }),function error(response)
         {

@@ -24,7 +24,6 @@ app.controller("SearchController",function($scope,$http)
 
     $scope.recommend = function()
     {
-        console.log("http://localhost:8080/Job_Recommendation/search?" + $scope.create_query());
         $http.get("http://localhost:8080/Job_Recommendation/search?" + $scope.create_query())
         .then(function success(response)
         {
@@ -35,4 +34,17 @@ app.controller("SearchController",function($scope,$http)
             console.log(response);
         });
     }
+
+    $scope.logout =  function () {
+        $http({method: 'Post', url:"http://localhost:8080/Job_Recommendation/logout"})
+        .then(function success(response)
+        {
+            console.log(response);
+            window.location.href = "login.html";
+        },
+        function(error)
+        {
+            console.log(error);
+        })
+    };
 })

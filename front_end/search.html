@@ -9,38 +9,49 @@
     </head>
     <body>
         <div ng-controller="SearchController">
-            <div class="top"><h1>Job Recommendation System</h1></div>
+            <div class="top" >
+                <h1>Job Recommendation System<button ng-click = "logout()" class="btn btn-success pull-right">Logout</button></h1>
+                
+            </div>
             <br>
             <div class="container">
                 <h1>What are you looking for?</h1>
-                <form class="search_form">
-                    
-                    <input type = "text" class="form-control" placeholder="Job Title" ng-model="title" ng-model-instant>
-                    <br>
-                    <input type = "text" class="form-control" placeholder="Location" ng-model="location" ng-model-instant>
-                    <br>
-                    <input type = "text" class="form-control" placeholder="Skills" ng-model="skill" ng-model-instant>
-                    <br>
-                    <input type = "text" class="form-control" placeholder="Company" ng-model="company" ng-model-instant>
-                    <br>
-                    <br>
-                    <button class="btn btn-block btn-primary" ng-click="recommend()">Search</button>
-                </form>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form class="search_form">    
+                            <br>
+                            <input type = "text" class="form-control" placeholder="Job Title" ng-model="title" ng-model-instant>
+                            <br>
+                            <input type = "text" class="form-control" placeholder="Location" ng-model="location" ng-model-instant>
+                            <br>
+                            <input type = "text" class="form-control" placeholder="Skills" ng-model="skill" ng-model-instant>
+                            <br>
+                            <input type = "text" class="form-control" placeholder="Company" ng-model="company" ng-model-instant>
+                            <br>
+                            <br>
+                            <button class="btn btn-block btn-primary" ng-click="recommend()">Search</button>
+                        </form>
+                    </div>
+                    <div class = "col-md-16">
+                        <div>
+                            <table class="result_table">
+                                <tr>
+                                    <th>title</th>
+                                    <th>location</th>
+                                    <th>skillset</th>
+                                    <th>company</th>
+                                </tr>
+                                <tr ng-repeat="x in names">
+                                    <td>{{x.title}}</td>
+                                    <td>{{x.location}}</td>
+                                    <td>{{x.skill}}</td>
+                                    <td>{{x.company}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <table>
-                <tr>
-                    <th>title</th>
-                    <th>location</th>
-                    <th>skillset</th>
-                    <th>company</th>
-                </tr>
-                <tr ng-repeat="x in names">
-                    <td>{{x.title}}</td>
-                    <td>{{x.location}}</td>
-                    <td>{{x.skill}}</td>
-                    <td>{{x.company}}</td>
-                </tr>
-            </table>
         </div>
     </body>
 

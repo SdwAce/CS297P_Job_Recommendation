@@ -12,3 +12,8 @@
   text-align: center;
   color: black;
 }
+
+.result_table {
+  table-layout: auto;
+  width: 100%;  
+}

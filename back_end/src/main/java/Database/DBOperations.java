@@ -14,8 +14,8 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 
 public class DBOperations {
     public Connection conn;
-    private static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-    private static SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
+    private static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);;
+    private static SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");;
 
     //private static Session session; //create factory session based on configurations
 
@@ -24,7 +24,7 @@ public class DBOperations {
     public static void main(String[] args){
         //createTable();
         User user = new User();
-        user.setUser_id("sundiwen");
+        user.setUser_id("sundiwen163");
         user.setFirstName("hhh");
         user.setLastName("hhh");
         user.setPassword("GM755123637qs");
@@ -34,14 +34,8 @@ public class DBOperations {
 
     //initialize the connection whenever the object is created
     public DBOperations() {
-        try {
-            Class.forName("org.postgresql.Driver").newInstance();
-            String url = RDSConfig.URL;
-            conn = DriverManager.getConnection(url);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        //context =
+        //SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
     }
 
     private static void createTable(){
@@ -77,35 +71,27 @@ public class DBOperations {
     public static boolean register(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        User getUesr = (User) session.get(User.class,user.getUser_id());
-        if(getUesr != null){
+        User getUser = (User) session.get(User.class,user.getUser_id());
+//        System.out.println(getUser.getFirstName());
+//        System.out.println(getUser.getUser_id());
+        if(getUser != null){
             return false;
         }
         session.save(user);
         session.getTransaction().commit();
-        //session.refresh();
         session.close();
-        System.out.println("successfully saved");
         return true;
 
     }
-    public boolean login(String userId, String password){
-        if (!checkConnection()){
-            return false;
+    public String[] login(String userId, String password){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        User getUser = (User) session.get(User.class,userId);
+        if (getUser == null || !getUser.getPassword().equals(password)){
+            return new String[]{"Failed",null};
         }
-        String comm = "SELECT user_id FROM users WHERE user_id = ? AND password = ?";
-        try{
-            PreparedStatement statement = conn.prepareStatement(comm);
-            statement.setString(1, userId);
-            statement.setString(2, password);
-            ResultSet set = statement.executeQuery();
-            if (set.next()){
-                return true;
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return false;
+        //System.out.println(getUser.getFirstName());
+        return new String[]{"Success",getUser.getFirstName()};
     }
 
     public static void setFavorite(String userid, Job job){
@@ -117,7 +103,6 @@ public class DBOperations {
         session.save(history);
         session.getTransaction().commit();
         session.close();
-
     }
 
     public static void unsetFavorite(String userid, Job job ){
@@ -140,10 +125,17 @@ public class DBOperations {
         session.close();
    }
 
-
-
-
-
+   public String getFirstName(String user_id){
+       Session session = sessionFactory.openSession();
+       session.beginTransaction(); //creating transaction object
+       User user = (User) session.get(User.class, user_id);
+        try {
+            String firstname = user.getFirstName();
+        }catch(NullPointerException e){
+            System.out.println(e.getMessage());
+        }
+        return user.getFirstName();
+    }
     public void close() {
         if (conn != null) {
             try {
@@ -153,6 +145,12 @@ public class DBOperations {
             }
         }
     }
+
+
+
+
+
+
 
 
 }

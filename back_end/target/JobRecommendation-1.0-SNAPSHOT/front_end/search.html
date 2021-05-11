@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html ng-app = "JobRecommendation">
+    <head>
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+        <script type = "text/javascript" src="script.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="search_style.css" />
+    </head>
+    <body>
+        <div ng-controller="SearchController">
+            <div class="top"><h1>Job Recommendation System</h1></div>
+            <br>
+            <div class="container">
+                <h1>What are you looking for?</h1>
+                <div class="row">
+                    <div class="col-md-8">
+                        <form class="search_form">    
+                            <br>
+                            <input type = "text" class="form-control" placeholder="Job Title" ng-model="title" ng-model-instant>
+                            <br>
+                            <input type = "text" class="form-control" placeholder="Location" ng-model="location" ng-model-instant>
+                            <br>
+                            <input type = "text" class="form-control" placeholder="Skills" ng-model="skill" ng-model-instant>
+                            <br>
+                            <input type = "text" class="form-control" placeholder="Company" ng-model="company" ng-model-instant>
+                            <br>
+                            <br>
+                            <button class="btn btn-block btn-primary" ng-click="recommend()">Search</button>
+                        </form>
+                    </div>
+                    <div class = "col-md-16">
+                        <div>
+                            <table class="result_table">
+                                <tr>
+                                    <th>title</th>
+                                    <th>location</th>
+                                    <th>skillset</th>
+                                    <th>company</th>
+                                </tr>
+                                <tr ng-repeat="x in names">
+                                    <td>{{x.title}}</td>
+                                    <td>{{x.location}}</td>
+                                    <td>{{x.skill}}</td>
+                                    <td>{{x.company}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+
+
+</html>

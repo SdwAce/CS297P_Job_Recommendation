@@ -6,7 +6,7 @@ LoginApp.config(function ($routeProvider)
     when("/",{
         templateUrl: "login.html"
     })
-    .when("/search",{
+    .when("!/search",{
         templateUrl: "search.html",
         controller: "SearchController"
     })
@@ -18,27 +18,35 @@ LoginApp.config(function ($routeProvider)
 LoginApp.controller("loginController",function($scope,$http,$location)
 {
     $scope.check_user = function(){
-        $http.post("http://localhost:8080/Job_Recommendation/login",{data:{username:$scope.username,password:$scope.password}})
+
+        $scope.data = {
+            "user_id": $scope.username,
+            "password": $scope.password
+        }
+
+        $http({method: 'Post', url:"http://localhost:8080/Job_Recommendation/login",data:$scope.data})
         .then(function success(response)
         {
             if (response.data)
             {
-                $scope.EnterSearchPage($location);
+                console.log(response.data);
+                window.location.href = "search.html"
             }
             else(response.data)
             {
-                alert(response);
+                console.log(response.data);
+                // alert(response);
             }
         },function error(response)
         {
-            console.log(response);
+            console.log(response.data);
         })
     }
 
 
     $scope.EnterSearchPage = function()
     {
-        $location.path("/search");
+        $location.path("./search");
     }
 
 })

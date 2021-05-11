@@ -1,0 +1,13 @@
+.register_form{
+  max-width: 400px;
+  margin: 1 auto;
+}
+
+.top{
+  background-color: cadetblue;
+  height: 48px;
+}
+
+.container h1{
+  text-align: center;
+}

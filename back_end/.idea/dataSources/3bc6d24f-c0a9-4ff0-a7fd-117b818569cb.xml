@@ -796,7 +796,7 @@ false Z
 false Zulu
 true posixrules
 </TimeZones>
-      <StartupTime>1620159739</StartupTime>
+      <StartupTime>1620515135</StartupTime>
     </root>
     <database id="2" parent="1" name="CS297_Project">
       <ObjectId>16396</ObjectId>
@@ -811,7 +811,7 @@ true posixrules
 14014||-9223372036854775808|U|G
 14014||10|U|G</Grants>
       <Owner>CS297P</Owner>
-      <IntrospectionStateNumber>601</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1076</IntrospectionStateNumber>
       <Current>1</Current>
     </database>
     <database id="3" parent="1" name="postgres">
@@ -930,7 +930,7 @@ default_transaction_read_only=off</Config>
       <Comment>standard public schema</Comment>
       <StateNumber>527</StateNumber>
       <Owner>CS297P</Owner>
-      <IntrospectionStateNumber>602</IntrospectionStateNumber>
+      <IntrospectionStateNumber>1077</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <extension id="26" parent="2" name="plpgsql">
@@ -1046,26 +1046,31 @@ default_transaction_read_only=off</Config>
       <Owner>CS297P</Owner>
       <StateNumber>557</StateNumber>
     </table>
-    <table id="41" parent="25" name="users">
+    <table id="41" parent="25" name="job_data">
+      <ObjectId>25398</ObjectId>
+      <Owner>CS297P</Owner>
+      <StateNumber>1051</StateNumber>
+    </table>
+    <table id="42" parent="25" name="users">
       <ObjectId>16428</ObjectId>
       <Owner>CS297P</Owner>
       <StateNumber>579</StateNumber>
     </table>
-    <column id="42" parent="39" name="jobid">
+    <column id="43" parent="39" name="jobid">
       <Position>1</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>556</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="43" parent="39" name="userid">
+    <column id="44" parent="39" name="userid">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>556</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="44" parent="39" name="history_pkey">
+    <index id="45" parent="39" name="history_pkey">
       <ObjectId>16416</ObjectId>
       <StateNumber>556</StateNumber>
       <ColNames>jobid
@@ -1078,7 +1083,7 @@ userid</ColNames>
 default</CollationNames>
       <ClassIds>3126,3126</ClassIds>
     </index>
-    <key id="45" parent="39" name="history_pkey">
+    <key id="46" parent="39" name="history_pkey">
       <ObjectId>16417</ObjectId>
       <StateNumber>556</StateNumber>
       <ColNames>jobid
@@ -1086,38 +1091,38 @@ userid</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>history_pkey</UnderlyingIndexName>
     </key>
-    <column id="46" parent="40" name="id">
+    <column id="47" parent="40" name="id">
       <Position>1</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>557</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="47" parent="40" name="company">
+    <column id="48" parent="40" name="company">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>557</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="48" parent="40" name="description">
+    <column id="49" parent="40" name="description">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>557</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="49" parent="40" name="location">
+    <column id="50" parent="40" name="location">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>557</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="50" parent="40" name="title">
+    <column id="51" parent="40" name="title">
       <Position>5</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>557</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="51" parent="40" name="job_pkey">
+    <index id="52" parent="40" name="job_pkey">
       <ObjectId>16424</ObjectId>
       <StateNumber>557</StateNumber>
       <ColNames>id</ColNames>
@@ -1128,39 +1133,75 @@ userid</ColNames>
       <CollationNames>default</CollationNames>
       <ClassIds>3126</ClassIds>
     </index>
-    <key id="52" parent="40" name="job_pkey">
+    <key id="53" parent="40" name="job_pkey">
       <ObjectId>16425</ObjectId>
       <StateNumber>557</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>job_pkey</UnderlyingIndexName>
     </key>
-    <column id="53" parent="41" name="user_id">
+    <column id="54" parent="41" name="job_title">
+      <Position>1</Position>
+      <DataType>varchar(32767)|0s</DataType>
+      <StateNumber>997</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="55" parent="41" name="company">
+      <Position>2</Position>
+      <DataType>varchar(32767)|0s</DataType>
+      <StateNumber>998</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="56" parent="41" name="estimated_salary">
+      <Position>3</Position>
+      <DataType>varchar(32767)|0s</DataType>
+      <StateNumber>999</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="57" parent="41" name="Location">
+      <Position>4</Position>
+      <DataType>varchar(32767)|0s</DataType>
+      <StateNumber>1000</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="58" parent="41" name="job_description">
+      <Position>5</Position>
+      <DataType>varchar(32767)|0s</DataType>
+      <StateNumber>1001</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="59" parent="41" name="job_id">
+      <Position>7</Position>
+      <DataType>varchar(32767)|0s</DataType>
+      <StateNumber>1051</StateNumber>
+      <TypeId>1043</TypeId>
+    </column>
+    <column id="60" parent="42" name="user_id">
       <Position>1</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>579</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="54" parent="41" name="firstname">
+    <column id="61" parent="42" name="firstname">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>579</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="55" parent="41" name="lastname">
+    <column id="62" parent="42" name="lastname">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>579</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="56" parent="41" name="password">
+    <column id="63" parent="42" name="password">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>579</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="57" parent="41" name="users_pkey">
+    <index id="64" parent="42" name="users_pkey">
       <ObjectId>16434</ObjectId>
       <StateNumber>579</StateNumber>
       <ColNames>user_id</ColNames>
@@ -1171,7 +1212,7 @@ userid</ColNames>
       <CollationNames>default</CollationNames>
       <ClassIds>3126</ClassIds>
     </index>
-    <key id="58" parent="41" name="users_pkey">
+    <key id="65" parent="42" name="users_pkey">
       <ObjectId>16435</ObjectId>
       <StateNumber>579</StateNumber>
       <ColNames>user_id</ColNames>
