@@ -1,5 +1,4 @@
 package CS297.JobRecommendation;
-
 import org.json.JSONObject;
 
 import javax.servlet.ServletException;
@@ -14,7 +13,6 @@ import java.util.List;
 
 
 @WebServlet(name = "SearchServlet",urlPatterns = {"/search"})
-//@WebServlet(name = "SearchServlet", value = "/SearchServlet")
 public class SearchServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -55,6 +53,7 @@ public class SearchServlet extends HttpServlet {
         int i = 0;
         for (JobEntry jobEntry : jobEntryList) {
             JSONObject entry = new JSONObject();
+            entry.put("job_id",jobEntry.getJob_id());
             entry.put("title",jobEntry.getTitle());
             entry.put("company",jobEntry.getCompany());
             entry.put("location",jobEntry.getLocation());

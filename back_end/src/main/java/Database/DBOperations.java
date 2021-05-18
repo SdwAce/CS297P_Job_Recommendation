@@ -1,6 +1,13 @@
 package Database;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import Model.History;
 import Model.HistoryKey;
@@ -8,72 +15,40 @@ import Model.Job;
 import Model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 
 public class DBOperations {
-    public Connection conn;
+
+    public static  Connection conn;
     private static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);;
     private static SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");;
 
-    //private static Session session; //create factory session based on configurations
+
+ public static void main(String[] args) throws IOException, InterruptedException, SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
 
 
-    public static void main(String[] args){
-        //createTable();
-        User user = new User();
-        user.setUser_id("sundiwen163");
-        user.setFirstName("hhh");
-        user.setLastName("hhh");
-        user.setPassword("GM755123637qs");
-        register(user);
+        //getParameters("New York, NY");
         //setFavorite("2222",new Job("Software_Engineer","Microsoft","Irvine"));
+        //searchNearJobs(Double.valueOf(-117),Double.valueOf(34));
+        showHistory("diwen");
     }
 
     //initialize the connection whenever the object is created
     public DBOperations() {
         //context =
         //SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
-    }
 
-    private static void createTable(){
-        Session session = sessionFactory.openSession();
-
-        session.beginTransaction(); //creating transaction object
-         //Job job = session.get(Job.class,4);
-
-         //if (job != null){
-             //System.out.println("deleted!");
-             //session.delete(job);
-         //}
-
-         Job job2 = new Job();
-         //job2.setId(5);
-        job2.setTitle("mdzz");
-        job2.setLocation("cndy");
-        job2.setDescription("qnmd");
-        session.save(job2);
-        session.getTransaction().commit();
-        //session.refresh();
-        session.close();
-        System.out.println("successfully saved");
-   }
-    private boolean checkConnection(){
-        if (conn == null) {
-            System.err.println("DB connection failed");
-            return false;
-        }
-        return true;
     }
 
     public static boolean register(User user) {
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         User getUser = (User) session.get(User.class,user.getUser_id());
-//        System.out.println(getUser.getFirstName());
-//        System.out.println(getUser.getUser_id());
         if(getUser != null){
             return false;
         }
@@ -88,27 +63,29 @@ public class DBOperations {
         session.beginTransaction();
         User getUser = (User) session.get(User.class,userId);
         if (getUser == null || !getUser.getPassword().equals(password)){
+            session.close();
             return new String[]{"Failed",null};
         }
         //System.out.println(getUser.getFirstName());
+        session.close();
         return new String[]{"Success",getUser.getFirstName()};
     }
 
-    public static void setFavorite(String userid, Job job){
-        saveJob(job);
+    public static void setFavorite(String userid, String job_id){
+        //saveJob(job);
         Session session = sessionFactory.openSession();
         session.beginTransaction();
         History history = new History();
-        history.setKey(new HistoryKey(userid, job.getId()));
-        session.save(history);
+        history.setKey(new HistoryKey(userid, job_id));
+        session.saveOrUpdate(history);
         session.getTransaction().commit();
         session.close();
     }
 
-    public static void unsetFavorite(String userid, Job job ){
+    public static void unsetFavorite(String userid, String job_id){
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        History history = (History) session.get(History.class,new HistoryKey(userid,job.getId()));
+        History history = (History) session.get(History.class,new HistoryKey(userid,job_id));
         if (history != null){
             session.delete(history);
             session.getTransaction().commit();
@@ -116,6 +93,8 @@ public class DBOperations {
         session.close();
 
     }
+
+
 
     public static void saveJob(Job job){
         Session session = sessionFactory.openSession();
@@ -136,7 +115,162 @@ public class DBOperations {
         }
         return user.getFirstName();
     }
-    public void close() {
+    //method for update lat and lon
+    public static void update(){
+        try (Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+            ResultSet result = stmt.executeQuery("SELECT * FROM job_data");
+            while (result.next()) {
+                String address = result.getString("location");
+                try {
+                    Double[] parameters = getParameters(address);
+                    //System.out.println(parameters[0]);
+                if (parameters[0] != null && parameters[1] != null){
+                    result.updateDouble("lon", parameters[0]);
+                    result.updateDouble("lat", parameters[1]);
+                    result.updateRow();
+                }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }catch (SQLException e) {
+
+        }
+    }
+
+    public static List<Job> searchNearJobs(Double lon, Double lat){
+        List<Job> result = new ArrayList<>();
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            conn = DriverManager.getConnection(RDSConfig.URL);
+
+            if (conn == null) {
+                return result;
+            }
+            String sql = "SELECT * FROM job_data where lat between ? and ? and lon between ? and ? LIMIT 10";
+            try {
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setDouble(1, lat - 0.3);
+                statement.setDouble(2, lat + 0.3);
+                statement.setDouble(3, lon - 0.3);
+                statement.setDouble(4, lon + 0.3);
+                try (ResultSet rs = statement.executeQuery()) {
+                    while(rs.next()) {
+                        Job jobtoAdd = new Job();
+                        result.add(jobtoAdd);
+                        jobtoAdd.setJob_id(rs.getString("job_id"));
+                        jobtoAdd.setLocation(rs.getString("Location"));
+                        jobtoAdd.setCompany(rs.getString("company"));
+                        jobtoAdd.setJob_description(rs.getString("job_description"));
+                        jobtoAdd.setJob_title(rs.getString("job_title"));
+                        jobtoAdd.setLat(rs.getDouble("lat"));
+                        jobtoAdd.setLon(rs.getDouble("lon"));
+                        System.out.println(jobtoAdd.getLocation());
+
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                conn.close();
+                return result;
+            }
+
+
+            //System.out.println("Import done successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+
+    }
+
+    public static Double[] getParameters(String address) throws IOException {
+        Double[] solution = new Double[2];
+        String url = "http://api.positionstack.com/v1/forward?access_key=c2bd376cfcf3894b4333edd277c28994&query=" + address;
+        //get lat and lon based on string
+        url = url.replaceAll(" ","%20");
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        // optional default is GET
+        con.setRequestMethod("GET");
+        //add request header
+        int responseCode = con.getResponseCode();
+        if (responseCode != 200){
+            return solution;
+        }
+        //System.out.println("\nSending 'GET' request to URL : " + url);
+        //System.out.println("Response Code : " + responseCode);
+        BufferedReader in = new BufferedReader(
+                new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuffer response = new StringBuffer();
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+        //System.out.println(response.toString());
+        JSONObject json = new JSONObject(response.toString());
+
+        JSONArray jsonArray = json.getJSONArray("data");
+        JSONObject myJsonObject = new JSONObject();
+        if (jsonArray.length() == 0){
+            return solution;
+        }
+        try {
+            myJsonObject = jsonArray.getJSONObject(0);
+            solution[0] = Double.valueOf(myJsonObject.optString("longitude"));
+            solution[1] = Double.valueOf(myJsonObject.optString("latitude"));
+        }catch (org.json.JSONException e){
+        }
+        return solution;
+
+   }
+
+   public static List<Job> showHistory(String user__id) throws SQLException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+       List<Job> result = new ArrayList<>();
+       try {
+           Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+           conn = DriverManager.getConnection(RDSConfig.URL);
+
+           if (conn == null) {
+               return result;
+           }
+           //in (SELECT jobid FROM history where userid = ?)
+           String sql = "SELECT * FROM job_data where job_id in (SELECT jobid FROM history where userid = ?)";
+           try {
+               PreparedStatement statement = conn.prepareStatement(sql);
+               statement.setString(1, user__id);
+               try (ResultSet rs = statement.executeQuery()) {
+                   while (rs.next()) {
+                       Job jobtoAdd = new Job();
+                       result.add(jobtoAdd);
+                       jobtoAdd.setJob_id(rs.getString("job_id"));
+                       jobtoAdd.setLocation(rs.getString("location"));
+                       jobtoAdd.setCompany(rs.getString("company"));
+                       jobtoAdd.setJob_description(rs.getString("job_description"));
+                       jobtoAdd.setJob_title(rs.getString("job_title"));
+                       jobtoAdd.setLat(rs.getDouble("lat"));
+                       jobtoAdd.setLon(rs.getDouble("lon"));
+
+                   }
+               }
+           } catch (SQLException e) {
+           }
+
+
+           //System.out.println("Import done successfully");
+       } catch (Exception e) {
+           e.printStackTrace();
+       }
+       //conn.close();
+       return result;
+   }
+
+
+
+    public static void close() {
         if (conn != null) {
             try {
                 conn.close();
@@ -145,12 +279,6 @@ public class DBOperations {
             }
         }
     }
-
-
-
-
-
-
 
 
 }

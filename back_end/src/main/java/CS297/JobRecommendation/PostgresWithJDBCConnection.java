@@ -10,27 +10,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PostgresWithJDBCConnection {
-    public static final String ClientPassword = "adminuser";
-    public static final String DATABASE_CLIENT = "postgres";
-    public static final String DATABASE_URL = "jdbc:postgresql://127.0.0.1:5432/job_recommender";
+    public static final String ClientPassword = "GM755123637qs";
+    public static final String DATABASE_CLIENT = "CS297P";
+    public static final String DATABASE_URL = "jdbc:postgresql://cs297-instance.ckjk7kzjfhir.us-east-1.rds.amazonaws.com:5432/CS297_Project?createDatabaseIfNotExist=true&serverTimezone=UTC";
 
     public static String constructSQLKeywordArray(String[] keywords, String surround) {
         String returnStr = "'"; // add open bracket
         for (int i = 0; i < keywords.length; i++) {
             returnStr = returnStr + keywords[i]; // add keyword surrounded by % and '
             if (i < keywords.length - 1) {
-                returnStr = returnStr + " & "; // add comma, except for last element
+                returnStr = returnStr + " & "; // add comma, except for last job_dataelement
             }
         }
         return returnStr + "'"; // add close bracket
     }
 
     public static void viewTable(Connection con, List <JobEntry> jobEntryList, String[] keywords) throws SQLException {
-        String keywordSearchQuery = "SELECT * FROM jobs WHERE job_desc_tsv @@ to_tsquery(" + constructSQLKeywordArray(keywords, "") + ")";
-
-        String keywordSortedQuery = "SELECT id, job_title, company, location, job_description, (array_length(x, 1) - 1) AS freq FROM jobs " +
-                                    "CROSS JOIN LATERAL regexp_split_to_array(job_description, '\\m"+ keywords[0] +"\\M') as t(x) " +
-                                    "where job_description like any (array['%"+ keywords[0] +"%']) order by freq desc";
+        String keywordSearchQuery = "SELECT * FROM job_data WHERE job_desc_tsv @@ to_tsquery(" + constructSQLKeywordArray(keywords, "") + ")";
 
         try (Statement stmt = con.createStatement()) {
             ResultSet rs = stmt.executeQuery(keywordSearchQuery);
@@ -40,16 +36,15 @@ public class PostgresWithJDBCConnection {
                 {
                     break;
                 }
-
+                String job_id = rs.getString("job_id");
                 String title = rs.getString("job_title");
                 String company = rs.getString("company");
-                String estSalary = rs.getString("estimated_salary");
                 String location = rs.getString("location");
                 String description = rs.getString("job_description");
                 JobEntry jobEntry = new JobEntry();
+                jobEntry.setJob_id(job_id);
                 jobEntry.setTitle(title);
                 jobEntry.setCompany(company);
-                jobEntry.setEstimatedSalary(estSalary);
                 jobEntry.setLocation(location);
                 jobEntry.setDescription(description);
                 jobEntryList.add(jobEntry);
@@ -58,6 +53,7 @@ public class PostgresWithJDBCConnection {
             // print top 10 entries
 //            int i = 0; // TODO delete
             for (JobEntry jobEntry : jobEntryList) {
+                System.out.print("ID:: " + jobEntry.getJob_id());
                 System.out.print("Title:: " + jobEntry.getTitle());
                 System.out.print(" | Company:: " + jobEntry.getCompany());
                 System.out.print(" | Location:: " + jobEntry.getLocation());

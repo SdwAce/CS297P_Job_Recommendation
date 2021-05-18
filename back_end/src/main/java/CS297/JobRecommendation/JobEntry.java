@@ -1,13 +1,16 @@
 package CS297.JobRecommendation;
-
 public class JobEntry {
+    public String job_id;
     public String title;
     public String company;
+
     public String estSalary;
     public String location;
     public String description;
 
     //-----------------------SETTERS-----------------------
+
+    public void setJob_id(String job_id) { this.job_id = job_id;}
     public void setTitle(String title) {
         this.title = title;
     }
@@ -43,5 +46,8 @@ public class JobEntry {
 
     public String getDescription() {
         return this.description;
+    }
+    public String getJob_id() {
+        return job_id;
     }
 }

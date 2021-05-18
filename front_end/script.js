@@ -1,7 +1,8 @@
-var app = angular.module("JobRecommendation", []);
-app.controller("SearchController",function($scope,$http)
+var app = angular.module("JobRecommendation", ["ngStorage"]);
+app.controller("SearchController",function($scope,$http,$localStorage,$sessionStorage)
 {
-    $scope.names = "";
+
+    $scope.name = $localStorage.name;
 
     $scope.create_query = function()
     {
@@ -27,7 +28,8 @@ app.controller("SearchController",function($scope,$http)
         $http.get("http://localhost:8080/Job_Recommendation/search?" + $scope.create_query())
         .then(function success(response)
         {
-            $scope.names = Object.values(response.data)
+            console.log(response);
+            $scope.job_listings = Object.values(response.data)
         },
         function error(response)
         {
@@ -35,11 +37,40 @@ app.controller("SearchController",function($scope,$http)
         });
     }
 
+    $scope.Likes = function (index)
+    {
+        var jobId = $scope.job_listings[index].job_id;
+        var test_data = {
+            user_id : $scope.name,
+            job_id: jobId
+        }
+        $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
+        .then(function success(response)
+        {
+            $scope.new_job_likes = $scope.job_listings[index].title + " has been added to your favorite list";
+            // alert("It went through")
+            console.log(response);
+        }, function error(response)
+        {
+            console.log(response);
+        })
+    }
+
+    $scope.display_history = function ()
+    {
+        console.log(123);
+        window.location.href = "show_history.html";
+    }
+
+    $scope.display_location_recommendation = function ()
+    {
+        window.location.href = "search_by_location.html";
+    }
+
     $scope.logout =  function () {
         $http({method: 'Post', url:"http://localhost:8080/Job_Recommendation/logout"})
         .then(function success(response)
         {
-            console.log(response);
             window.location.href = "login.html";
         },
         function(error)

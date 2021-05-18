@@ -1,4 +1,4 @@
-var LoginApp = angular.module("loginPage",["ngRoute"]);
+var LoginApp = angular.module("loginPage",["ngRoute","ngStorage"]);
 
 LoginApp.config(function ($routeProvider)
 {
@@ -15,7 +15,7 @@ LoginApp.config(function ($routeProvider)
     });
 });
 
-LoginApp.controller("loginController",function($scope,$http,$location)
+LoginApp.controller("loginController",function($scope,$http,$location,$localStorage,$sessionStorage)
 {
     $scope.check_user = function(){
 
@@ -29,7 +29,7 @@ LoginApp.controller("loginController",function($scope,$http,$location)
         {
             if (response.data)
             {
-                console.log(response.data);
+                $localStorage.name = $scope.username;
                 window.location.href = "search.html"
             }
             else(response.data)
