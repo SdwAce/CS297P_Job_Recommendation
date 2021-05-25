@@ -1,13 +1,13 @@
-var HistoryApp = angular.module("FavoriteJobHistory",["ngStorage"]);
+var app = angular.module("FavoriteJobHistory",["ngStorage"]);
 
-HistoryApp.controller("JobHistoryController",function($http,$scope,$localStorage)
+app.controller("JobHistoryController",function($http,$scope,$localStorage)
 {
-    
+    $scope.name = localStorage.name;
     $http({method:"Get",url:"http://localhost:8080/Job_Recommendation/show"})
     .then(function success(response)
     {
         console.log(response);
-        $scope.job_history = Object.values(repsonse.data);
+        $scope.job_history = Object.values(response.data);
 
     },function error(response)
     {

@@ -1,20 +1,5 @@
 var LoginApp = angular.module("loginPage",["ngRoute","ngStorage"]);
 
-LoginApp.config(function ($routeProvider)
-{
-    $routeProvider.
-    when("/",{
-        templateUrl: "login.html"
-    })
-    .when("!/search",{
-        templateUrl: "search.html",
-        controller: "SearchController"
-    })
-    .otherwise({
-        redirectTo : "/"
-    });
-});
-
 LoginApp.controller("loginController",function($scope,$http,$location,$localStorage,$sessionStorage)
 {
     $scope.check_user = function(){
@@ -31,6 +16,16 @@ LoginApp.controller("loginController",function($scope,$http,$location,$localStor
             {
                 $localStorage.name = $scope.username;
                 window.location.href = "search.html"
+                $http({method:"Get",url:"http://localhost:8080/Job_Recommendation/show"})
+                .then(function success(response)
+                {
+                    console.log(response);
+                    $scope.job_history = Object.values(response.data);
+
+                },function error(response)
+                {
+                    console.log(response);
+                })
             }
             else(response.data)
             {

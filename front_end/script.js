@@ -19,6 +19,10 @@ app.controller("SearchController",function($scope,$http,$localStorage,$sessionSt
         {
             query = query.concat("skill=" + $scope.skill + "&");
         }
+        if ($scope.company !== "")
+        {
+            query = query.concat("company=" + $scope.company + "&");
+        }
         query = query.slice(0,-1);
         return query;
     }
