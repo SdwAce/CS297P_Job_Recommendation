@@ -15,17 +15,17 @@ LoginApp.controller("loginController",function($scope,$http,$location,$localStor
             if (response.data)
             {
                 $localStorage.name = $scope.username;
-                window.location.href = "search.html"
-                $http({method:"Get",url:"http://localhost:8080/Job_Recommendation/show"})
-                .then(function success(response)
-                {
-                    console.log(response);
-                    $scope.job_history = Object.values(response.data);
+                window.location.href = "search.html";
+                // $http({method:"Get",url:"http://localhost:8080/Job_Recommendation/show"})
+                // .then(function success(response)
+                // {
+                //     console.log(response);
+                //     $scope.job_history = Object.values(response.data);
 
-                },function error(response)
-                {
-                    console.log(response);
-                })
+                // },function error(response)
+                // {
+                //     console.log(response);
+                // })
             }
             else(response.data)
             {

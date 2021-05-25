@@ -18,7 +18,6 @@ public class Job implements Serializable {
 
     private String company;
     private String job_title;
-    @Column(name = "Location")
     private String location;
     private String job_description;
 
@@ -28,6 +27,16 @@ public class Job implements Serializable {
     //private boolean favorite;
     @Transient
     private Set keywords;
+    @Transient
+    private boolean favorite = false;
+
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
 
     public String getJob_id() {
         return job_id;

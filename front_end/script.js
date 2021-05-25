@@ -7,21 +7,25 @@ app.controller("SearchController",function($scope,$http,$localStorage,$sessionSt
     $scope.create_query = function()
     {
         var query = "";
-        if ($scope.title !== "")
+        if (typeof $scope.title !== "undefined")
         {
             query = query.concat("title=" + $scope.title + "&");
         }
-        if ($scope.location !== "")
+        if (typeof $scope.location !== "undefined")
         {
             query = query.concat("location=" + $scope.location + "&");
         }
-        if ($scope.skill !== "")
+        if (typeof $scope.skill !== "undefined")
         {
             query = query.concat("skill=" + $scope.skill + "&");
         }
-        if ($scope.company !== "")
+        if (typeof $scope.company !== "undefined")
         {
             query = query.concat("company=" + $scope.company + "&");
+        }
+        if (typeof $scope.name !== "undefined")
+        {
+            query = query.concat("user_id=" + $scope.name + "&");
         }
         query = query.slice(0,-1);
         return query;
@@ -33,7 +37,18 @@ app.controller("SearchController",function($scope,$http,$localStorage,$sessionSt
         .then(function success(response)
         {
             console.log(response);
-            $scope.job_listings = Object.values(response.data)
+            var jobs = Object.values(response.data);
+            
+            console.log(jobs);
+            $scope.job_listings = [];
+            for (i = 0; i< jobs.length;++i)
+            {
+                if (!jobs[i].favorite)
+                {
+                    $scope.job_listings.push(jobs[i]);
+                }
+            }
+            console.log($scope.job_listings);
         },
         function error(response)
         {

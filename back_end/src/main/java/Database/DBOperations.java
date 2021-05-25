@@ -5,14 +5,13 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.Key;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
-import Model.History;
-import Model.HistoryKey;
-import Model.Job;
-import Model.User;
+import Model.*;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.json.JSONArray;
@@ -35,7 +34,9 @@ public class DBOperations {
         //getParameters("New York, NY");
         //setFavorite("2222",new Job("Software_Engineer","Microsoft","Irvine"));
         //searchNearJobs(Double.valueOf(-117),Double.valueOf(34));
-        showHistory("diwen");
+        //showHistory("diwen");
+
+
     }
 
     //initialize the connection whenever the object is created
@@ -85,7 +86,7 @@ public class DBOperations {
     public static void unsetFavorite(String userid, String job_id){
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        History history = (History) session.get(History.class,new HistoryKey(userid,job_id));
+        History history = checkExist(userid,job_id);
         if (history != null){
             session.delete(history);
             session.getTransaction().commit();
@@ -93,16 +94,42 @@ public class DBOperations {
         session.close();
 
     }
+    //public Set<String> extractKeywords(String job_id){
 
+    //}
+//    public static void TFIDF(String job_id){
+//     List<String> descriptions = new ArrayList<>();
+//        MonkeyLearnClient monkeyLearnClient = new MonkeyLearnClient();
+//        Session session = sessionFactory.openSession();
+//        session.beginTransaction();
+//        Job job = (Job) session.get(Job.class,job_id);
+//        try{
+//            String description = job.getJob_description();
+//            MonkeyLearnClient client = new MonkeyLearnClient();
+//            List<Set<String>> keywords = client.extract2(description);
+//            if (keywords.size() == 0){
+//                return;
+//            }
+//            for (String keyword : keywords.get(0)){
+//                //System.out.println(keyword);
+//                if (keyword.contains("data")){
+//                    keyword = "data";
+//                }else if (keyword.contains("ai")){
+//                    keyword = "ai";
+//                }
+//
+//
+//            }
+//            //monkeyLearnClient.add();
+//
+//
+//        }catch(NullPointerException | IOException e){
+//            System.out.println(e.getMessage());
+//        }
+//
+//
+//    }
 
-
-    public static void saveJob(Job job){
-        Session session = sessionFactory.openSession();
-        session.beginTransaction(); //creating transaction object
-        session.save(job);
-        session.getTransaction().commit();
-        session.close();
-   }
 
    public String getFirstName(String user_id){
        Session session = sessionFactory.openSession();
@@ -140,7 +167,13 @@ public class DBOperations {
         }
     }
 
-    public static List<Job> searchNearJobs(Double lon, Double lat){
+    public static History checkExist(String job_id,String user_id ){
+        Session session = sessionFactory.openSession();
+        History history = session.get(History.class,new HistoryKey(user_id,job_id));
+        return history;
+    }
+
+    public static List<Job> searchNearJobs(String user_id,Double lon, Double lat){
         List<Job> result = new ArrayList<>();
         try {
             Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
@@ -167,7 +200,9 @@ public class DBOperations {
                         jobtoAdd.setJob_title(rs.getString("job_title"));
                         jobtoAdd.setLat(rs.getDouble("lat"));
                         jobtoAdd.setLon(rs.getDouble("lon"));
-                        System.out.println(jobtoAdd.getLocation());
+                        if(checkExist(rs.getString("job_id"),user_id) != null){
+                            jobtoAdd.setFavorite(true);
+                        }
 
                     }
                 }
@@ -237,10 +272,11 @@ public class DBOperations {
            if (conn == null) {
                return result;
            }
-           //in (SELECT jobid FROM history where userid = ?)
-           String sql = "SELECT * FROM job_data where job_id in (SELECT jobid FROM history where userid = ?)";
-           try {
-               PreparedStatement statement = conn.prepareStatement(sql);
+
+               //in (SELECT jobid FROM history where userid = ?)
+               String sql = "SELECT * FROM job_data where job_id in (SELECT jobid FROM history where userid = ?)";
+               try {
+                   PreparedStatement statement = conn.prepareStatement(sql);
                statement.setString(1, user__id);
                try (ResultSet rs = statement.executeQuery()) {
                    while (rs.next()) {
@@ -267,6 +303,11 @@ public class DBOperations {
        //conn.close();
        return result;
    }
+
+
+
+
+
 
 
 

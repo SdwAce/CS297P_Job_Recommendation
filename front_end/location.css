@@ -3,41 +3,21 @@
     width:600px;
 }
 
-.fa {
-    font-size: 50px;
-    cursor: pointer;
-    user-select: none;
-  }
-  
-/* .fa:hover {
-    color: darkblue;
-} */
-
-/* .like-btn {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 80px;
-    height: 80px;
-    cursor: pointer;
-    transition: all 0.5s;
-    opacity: 100;
-    z-index: 2;
-  } */
 
 
-  /* .fa-heart{
-    position: absolute;
-    font-size: var(--like-font-size);
-    -webkit-text-stroke: 2px #e5e5e5;
-    color: whitesmoke;
-    transition: all ease-in-out;
-  }
-  
-  .like-btn:checked + .fa-heart{
-    color: red;
-    -webkit-text-stroke: 1px red;
-    animation: .5s linear burst; 
-  } */
+.fancy-checkbox input[type="checkbox"] {
+  display: none;
+}
 
+.fancy-checkbox span:before {
+  font-family: "FontAwesome";
+  font-style: normal;
+  width: 1em;
+  height: 1em;
+  content: '\f004';
+  margin-right: .3em;
+}
+
+.fancy-checkbox input[type="checkbox"]:checked ~ span:before {
+  content: '\f004'; color: red;
+}

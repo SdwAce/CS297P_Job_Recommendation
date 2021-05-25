@@ -1,23 +1,42 @@
 var app = angular.module("RecommendationByLocation",["ngStorage"]);
 
-app.controller("RecommendLocationController",function($scope,$http)
+app.controller("RecommendLocationController",function($scope,$http,$localStorage)
 {
 
+    console.log($localStorage.name);
+    $scope.name = $localStorage.name;
     $scope.getLocation = function ($localStorage,$sessionStorage)
     {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function success(response)
             {     
 
+                console.log(response.coords.latitude.toString());
+                console.log(response.coords.longitude.toString());
                 var locationData = {
                     "lon": response.coords.longitude.toString(),
-                    "lat": response.coords.latitude.toString()
+                    "lat": response.coords.latitude.toString(),
+                    "user_id": $scope.name
                 }
                 $http({method:'Post',url:"http://localhost:8080/Job_Recommendation/searchnearby",data:locationData})
                 .then(function success(response)
                 {
-                    $scope.jobs_by_location = Object.values(Object.values(response.data));
-                    console.log($scope.jobs_by_location);
+                    var jobs = Object.values(response.data);
+
+                    console.log(jobs);
+
+                    $scope.jobs_by_location = [];
+
+                    $scope.liked_jobs = []
+                    for (i = 0; i< jobs.length;++i)
+                    {
+                        if (!jobs[i].favorite)
+                        {
+                            $scope.jobs_by_location.push(jobs[i]);
+                            $scope.liked_jobs.push(0);
+                        }
+                    }
+                    // console.log($scope.jobs_by_location);
                     var mapOptions = {
                         zoom: 4,
                         center: new google.maps.LatLng(locationData.lat,locationData.lon),
@@ -41,13 +60,15 @@ app.controller("RecommendLocationController",function($scope,$http)
 
     $scope.addMarkers = function (jobs)
     {
+        var url = "http://maps.google.com/mapfiles/ms/icons/";
+        var colors = ["purple","blue","pink","yellow","green"]
         for (i = 0; i < jobs.length; ++i)
         {
             console.log(jobs[i].lat);
             console.log(jobs[i].lon);
             new google.maps.Marker({
             map: $scope.mymapdetail,
-            icon: pinSymbol("#FFF"),
+            icon: url + colors[i%5] +"-dot.png",
             position: new google.maps.LatLng(jobs[i].lat, jobs[i].lon),
             title: "work location"
             });
@@ -65,15 +86,33 @@ app.controller("RecommendLocationController",function($scope,$http)
             user_id : "diwen",
             job_id: jobId
         }
-        $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
-        .then(function success(response)
+
+        if ($scope.liked_jobs[index] === 0)
         {
-            alert("It went through")
-            console.log(response);
-        }, function error(response)
-        {
-            console.log(response);
-        })
+            $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
+            .then(function success(response)
+            {
+                $scope.new_job_likes = $scope.jobs_by_location[index].job_title + " is added to your favorite list. ";
+                console.log($scope.new_job_likes);
+                console.log(response);
+                $scope.liked_jobs[index] = 1;
+            }, function error(response)
+            {
+                console.log(response);
+            })
+        }
+        else{
+            $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
+            .then(function success(response)
+            {
+                console.log(response);
+                alert("It is deleted");
+                $scope.liked_jobs[index] = 0;
+            }, function error(response)
+            {
+                console.log(response);
+            })
+        }
     }
 
     $scope.display_history = function ()

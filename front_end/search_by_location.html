@@ -116,6 +116,7 @@
 
                         <!-- <body ng-controller="RecommendLocationController"> -->
                             <div class="top"><h1>Jobs By Location</h1></div>
+                            <div class="alert alert-success" role="alert" ng-show="new_job_likes">{{new_job_likes}}</div>
                             <button class="btn btn-block btn-success"ng-click="getLocation()">Generate Recommendations</button>
                             <div class="card shadow mb-4">
                                 <!-- <div class="card-header py-3"> -->
@@ -123,6 +124,7 @@
                                 <!-- </div> -->
                                 <div class="card-body">
                                     <div class="table-responsive">
+
                                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                             <thead>
                                                 <tr>
@@ -137,9 +139,13 @@
                                                     <td>{{x.location}}</td>
                                                     <!-- <td><input type="button" value="Likes" ng-click="Likes($index)" /></td> -->
                                                     <!-- <td><i ng-click="Likes(this,$index)" class="fa fa-thumbs-up"></i></tr> -->
-                                                    <td><input type="checkbox" id="heart" class="like-btn">
-                                                    <label class="fa fa-heart" for="heart"></i></input>
-                                                    </td>
+                                                    <!-- <td><input type="checkbox" id="heart" class="like-btn">
+                                                    <label class="fa fa-heart" for="heart">
+                                                    </td> -->
+                                                    <td><label class="fancy-checkbox">
+                                                        <input type="checkbox" />
+                                                        <span ng-click=Likes($index)></span>
+                                                    </label></td>
                                                 </tr>
                                             </thead>
                                             
