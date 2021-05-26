@@ -23,13 +23,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class DBOperations {
 
     public static  Connection conn;
-    private static ApplicationContext context = new AnnotationConfigApplicationContext(ApplicationConfig.class);;
-    private static SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");;
+    private static ApplicationContext context;
+    private static SessionFactory sessionFactory;
 
 
  public static void main(String[] args) throws IOException, InterruptedException, SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
-
+//     context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+//     sessionFactory = (SessionFactory) context.getBean("sessionFactory");
 
         //getParameters("New York, NY");
         //setFavorite("2222",new Job("Software_Engineer","Microsoft","Irvine"));
@@ -41,9 +42,8 @@ public class DBOperations {
 
     //initialize the connection whenever the object is created
     public DBOperations() {
-        //context =
-        //SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
-
+        context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
+        sessionFactory = (SessionFactory) context.getBean("sessionFactory");
     }
 
     public static boolean register(User user) {
@@ -170,6 +170,7 @@ public class DBOperations {
     public static History checkExist(String job_id,String user_id ){
         Session session = sessionFactory.openSession();
         History history = session.get(History.class,new HistoryKey(user_id,job_id));
+        session.close();
         return history;
     }
 
@@ -206,6 +207,7 @@ public class DBOperations {
 
                     }
                 }
+                conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 conn.close();
@@ -318,6 +320,9 @@ public class DBOperations {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+        if (sessionFactory != null) {
+            sessionFactory.close();
         }
     }
 

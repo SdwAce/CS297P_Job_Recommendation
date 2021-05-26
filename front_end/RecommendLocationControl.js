@@ -87,8 +87,8 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
             job_id: jobId
         }
 
-        if ($scope.liked_jobs[index] === 0)
-        {
+        // if ($scope.liked_jobs[index] === 0)
+        // {
             $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
             .then(function success(response)
             {
@@ -100,19 +100,19 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
             {
                 console.log(response);
             })
-        }
-        else{
-            $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
-            .then(function success(response)
-            {
-                console.log(response);
-                alert("It is deleted");
-                $scope.liked_jobs[index] = 0;
-            }, function error(response)
-            {
-                console.log(response);
-            })
-        }
+        // }
+        // else{
+        //     $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
+        //     .then(function success(response)
+        //     {
+        //         console.log(response);
+        //         alert("It is deleted");
+        //         $scope.liked_jobs[index] = 0;
+        //     }, function error(response)
+        //     {
+        //         console.log(response);
+        //     })
+        // }
     }
 
     $scope.display_history = function ()

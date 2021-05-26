@@ -13,11 +13,12 @@ import Model.Job;
 
 public class PostgresWithJDBCConnection {
     public static final String ClientPassword = "GM755123637qs";
-    //"adminuser"; // LOCAL SETTINGS
     public static final String DATABASE_CLIENT = "CS297P";
-    //"postgres"; // LOCAL SETTINGS
     public static final String DATABASE_URL = "jdbc:postgresql://cs297-instance.ckjk7kzjfhir.us-east-1.rds.amazonaws.com:5432/CS297_Project?createDatabaseIfNotExist=true&serverTimezone=UTC";
-    //"jdbc:postgresql://127.0.0.1:5432/job_recommender"; // LOCAL SETTINGS
+
+//    public static final String DATABASE_CLIENT = "postgres"; // LOCAL SETTINGS
+//    public static final String ClientPassword = "adminuser"; // LOCAL SETTINGS
+//    public static final String DATABASE_URL = "jdbc:postgresql://127.0.0.1:5432/job_recommender"; // LOCAL SETTINGS
 
     // output: surround + keyword1 + between + keyword2 + between + ... + between + keywordN + surround
     private static String sandwichStringList(String[] keywords, String between, String surround) {
@@ -81,17 +82,17 @@ public class PostgresWithJDBCConnection {
                 rank +
                 " FROM job_data " +
                 whereStatement +
-                " ORDER BY rank DESC ";
+                " ORDER BY rank DESC LIMIT 100";
 
-        // if user_id is not empty string; mark the jobs from user's favorite list
-        if (!(user_id.equals(""))) {
-            keywordSearchQuery = "SELECT job_data.*, " +
-//                    "(CASE WHEN history.userid = " + user_id + " THEN 1 ELSE 0 END) AS favorite, " +
-                    rank +
-                    " FROM job_data, history " +
-                    whereStatement +
-                    " ORDER BY rank DESC ";
-        }
+//        // if user_id is not empty string; mark the jobs from user's favorite list
+//        if (!(user_id.equals(""))) {
+//            keywordSearchQuery = "SELECT job_data.*, " +
+////                    "(CASE WHEN history.userid = " + user_id + " THEN 1 ELSE 0 END) AS favorite, " +
+//                    rank +
+//                    " FROM job_data " +
+//                    whereStatement +
+//                    " ORDER BY rank DESC ";
+//        }
 
         System.out.println("Query: " + keywordSearchQuery);
 
@@ -101,7 +102,12 @@ public class PostgresWithJDBCConnection {
             ResultSet rs = stmt.executeQuery(keywordSearchQuery);
 
             // retrieve results from query
+            int i = 0;
             while (rs.next()) {
+                if (i == 20) {
+                    break;
+                }
+                i++;
                 // retrieve data from query
                 String job_id = rs.getString("job_id");
                 String title = rs.getString("job_title");
@@ -138,6 +144,7 @@ public class PostgresWithJDBCConnection {
             // search database by keywords in specific columns (i.e. fields)
             // CAUTION: mutates jobEntryList
             searchByFeature(conn, jobEntryList, keywords, fields, user_id);
+            conn.close();
         } catch (SQLException e) {
             System.out.print(e.getMessage());
         } catch (Exception e) {
