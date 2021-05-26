@@ -83,23 +83,24 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
         // sel.toggle("fa-thumbs-down");
         var jobId = $scope.jobs_by_location[index].job_id;
         var test_data = {
-            user_id : "diwen",
+            user_id : $scope.name,
             job_id: jobId
         }
 
+        console.log(test_data);
+
         // if ($scope.liked_jobs[index] === 0)
         // {
-            $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
-            .then(function success(response)
-            {
-                $scope.new_job_likes = $scope.jobs_by_location[index].job_title + " is added to your favorite list. ";
-                console.log($scope.new_job_likes);
-                console.log(response);
-                $scope.liked_jobs[index] = 1;
-            }, function error(response)
-            {
-                console.log(response);
-            })
+        $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
+        .then(function success(response)
+        {
+            $scope.new_job_likes = $scope.jobs_by_location[index].job_title + " is added to your favorite list. ";
+            console.log(response);
+            $scope.liked_jobs[index] = 1;
+        }, function error(response)
+        {
+            console.log(response);
+        })
         // }
         // else{
         //     $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})

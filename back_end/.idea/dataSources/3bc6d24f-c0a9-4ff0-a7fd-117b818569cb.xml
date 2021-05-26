@@ -1064,6 +1064,7 @@ default_transaction_read_only=off</Config>
     </table>
     <table id="43" parent="25" name="job_data">
       <ObjectId>42588</ObjectId>
+      <Outdated>1</Outdated>
       <Owner>CS297P</Owner>
       <StateNumber>1919</StateNumber>
     </table>

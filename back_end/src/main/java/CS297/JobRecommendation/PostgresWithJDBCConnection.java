@@ -103,6 +103,7 @@ public class PostgresWithJDBCConnection {
 
             // retrieve results from query
             int i = 0;
+            DBOperations db = new DBOperations();
             while (rs.next()) {
                 if (i == 20) {
                     break;
@@ -118,12 +119,14 @@ public class PostgresWithJDBCConnection {
                 // populate job object with query results
                 Job job = new Job();
                 job.setJob_title(title);
+                job.setJob_id(job_id);
                 job.setCompany(company);
                 job.setLocation(location);
                 job.setJob_description(description);
 
                 // if job is a favorite
-                if (DBOperations.checkExist(job_id, user_id) != null) {
+
+                if (db.checkExist(job_id, user_id) != null) {
                     job.setFavorite(true);
                 }
 
