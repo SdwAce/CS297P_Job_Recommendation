@@ -41,11 +41,13 @@ app.controller("SearchController",function($scope,$http,$localStorage,$sessionSt
             
             console.log(jobs);
             $scope.job_listings = [];
+            $scope.liked_jobs = []
             for (i = 0; i< jobs.length;++i)
             {
                 if (!jobs[i].favorite)
                 {
                     $scope.job_listings.push(jobs[i]);
+                    $scope.liked_jobs.push(0);
                 }
             }
             console.log($scope.job_listings);
@@ -63,16 +65,33 @@ app.controller("SearchController",function($scope,$http,$localStorage,$sessionSt
             user_id : $scope.name,
             job_id: jobId
         }
-        $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
-        .then(function success(response)
+
+        if ($scope.liked_jobs[index] === 0)
         {
-            $scope.new_job_likes = $scope.job_listings[index].title + " has been added to your favorite list";
-            // alert("It went through")
-            console.log(response);
-        }, function error(response)
-        {
-            console.log(response);
-        })
+            $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
+            .then(function success(response)
+            {
+                $scope.new_job_likes = $scope.job_listings[index].title + " has been added to your favorite list";
+                // alert("It went through")
+                $scope.liked_jobs[index] = 1;
+                console.log(response);
+            }, function error(response)
+            {
+                console.log(response);
+            })
+        }
+        else{
+            $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
+            .then(function success(response)
+            {
+                console.log(response);
+                alert("It is deleted");
+                $scope.liked_jobs[index] = 0;
+            }, function error(response)
+            {
+                console.log(response);
+            })
+        }
     }
 
     $scope.display_history = function ()

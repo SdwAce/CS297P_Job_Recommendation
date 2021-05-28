@@ -31,6 +31,14 @@ public class SetFavoriteServlet extends HttpServlet {
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("application/json");
+        String origin = req.getHeader("Origin");
+        resp.setHeader("Access-Control-Allow-Origin", origin);
+        resp.setHeader("Access-Control-Allow-Methods", "DELETE, HEAD, GET, OPTIONS, POST, PUT");
+
+        String headers = req.getHeader("Access-Control-Request-Headers");
+        if (headers != null)
+            resp.setHeader("Access-Control-Allow-Headers", headers);
+
         ObjectMapper mapper = new ObjectMapper();
         SaveRequestBody saveRequest = mapper.readValue(req.getReader(),SaveRequestBody.class);
         DBOperations db = new DBOperations();
