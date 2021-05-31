@@ -17,6 +17,14 @@ public class LogoutServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         ResultResponse resultResponse = new ResultResponse("Failed");
 
+        String origin = request.getHeader("Origin");
+        response.setHeader("Access-Control-Allow-Origin", origin);
+        response.setHeader("Access-Control-Allow-Methods", "DELETE, HEAD, GET, OPTIONS, POST, PUT");
+
+        String headers = request.getHeader("Access-Control-Request-Headers");
+        if (headers != null)
+            response.setHeader("Access-Control-Allow-Headers", headers);
+
         if (session != null) {
             session.invalidate();
             resultResponse.setResult("OK");
@@ -25,7 +33,6 @@ public class LogoutServlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         response.setContentType("application/json");
         mapper.writeValue(response.getWriter(), resultResponse);
-        response.sendRedirect("login.html");
     }
 
 

@@ -7,13 +7,15 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.Key;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
+//import External.MonkeyLearnClient;
 import Model.*;
+//import org.apache.lucene.search.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+//import org.hibernate.search.FullTextSession;
+//import org.hibernate.search.query.dsl.QueryBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
@@ -25,18 +27,19 @@ public class DBOperations {
     public static  Connection conn;
     private static ApplicationContext context;
     private static SessionFactory sessionFactory;
-
+    private static Set<String> set = new HashSet<>(Arrays.asList("data","ai","software","web","ios","android","business","machine learn","natural language","system","ui"));
 
  public static void main(String[] args) throws IOException, InterruptedException, SQLException, IllegalAccessException, InstantiationException, ClassNotFoundException {
 
-//     context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
-//     sessionFactory = (SessionFactory) context.getBean("sessionFactory");
 
+        context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         //getParameters("New York, NY");
         //setFavorite("2222",new Job("Software_Engineer","Microsoft","Irvine"));
         //searchNearJobs(Double.valueOf(-117),Double.valueOf(34));
         //showHistory("diwen");
-
+        sessionFactory =  (SessionFactory) context.getBean("sessionFactory");
+        setFavorite("diwen","f8f2458c-05b7-4ab6-a424-be6a371f1e96");
+        close();
 
     }
 
@@ -44,6 +47,8 @@ public class DBOperations {
     public DBOperations() {
         context = new AnnotationConfigApplicationContext(ApplicationConfig.class);
         sessionFactory = (SessionFactory) context.getBean("sessionFactory");
+        //context =
+        //SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
     }
 
     public static boolean register(User user) {
@@ -67,68 +72,11 @@ public class DBOperations {
             session.close();
             return new String[]{"Failed",null};
         }
-        //System.out.println(getUser.getFirstName());
         session.close();
         return new String[]{"Success",getUser.getFirstName()};
     }
 
-    public static void setFavorite(String userid, String job_id){
-        //saveJob(job);
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        History history = new History();
-        history.setKey(new HistoryKey(userid, job_id));
-        session.saveOrUpdate(history);
-        session.getTransaction().commit();
-        session.close();
-    }
 
-    public static void unsetFavorite(String userid, String job_id){
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
-        History history = checkExist(userid,job_id);
-        if (history != null){
-            session.delete(history);
-            session.getTransaction().commit();
-        }
-        session.close();
-
-    }
-    //public Set<String> extractKeywords(String job_id){
-
-    //}
-//    public static void TFIDF(String job_id){
-//     List<String> descriptions = new ArrayList<>();
-//        MonkeyLearnClient monkeyLearnClient = new MonkeyLearnClient();
-//        Session session = sessionFactory.openSession();
-//        session.beginTransaction();
-//        Job job = (Job) session.get(Job.class,job_id);
-//        try{
-//            String description = job.getJob_description();
-//            MonkeyLearnClient client = new MonkeyLearnClient();
-//            List<Set<String>> keywords = client.extract2(description);
-//            if (keywords.size() == 0){
-//                return;
-//            }
-//            for (String keyword : keywords.get(0)){
-//                //System.out.println(keyword);
-//                if (keyword.contains("data")){
-//                    keyword = "data";
-//                }else if (keyword.contains("ai")){
-//                    keyword = "ai";
-//                }
-//
-//
-//            }
-//            //monkeyLearnClient.add();
-//
-//
-//        }catch(NullPointerException | IOException e){
-//            System.out.println(e.getMessage());
-//        }
-//
-//
-//    }
 
 
    public String getFirstName(String user_id){
@@ -140,6 +88,7 @@ public class DBOperations {
         }catch(NullPointerException e){
             System.out.println(e.getMessage());
         }
+        session.close();
         return user.getFirstName();
     }
     //method for update lat and lon
@@ -160,8 +109,7 @@ public class DBOperations {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-            }
+             }
         }catch (SQLException e) {
 
         }
@@ -201,24 +149,23 @@ public class DBOperations {
                         jobtoAdd.setJob_title(rs.getString("job_title"));
                         jobtoAdd.setLat(rs.getDouble("lat"));
                         jobtoAdd.setLon(rs.getDouble("lon"));
-                        if(checkExist(rs.getString("job_id"),user_id) != null){
+                        if(checkExist(jobtoAdd.getJob_id(),user_id) != null){
                             jobtoAdd.setFavorite(true);
                         }
 
                     }
                 }
-                conn.close();
             } catch (SQLException e) {
                 e.printStackTrace();
                 conn.close();
                 return result;
             }
-
-
+            conn.close();
             //System.out.println("Import done successfully");
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return result;
 
     }
@@ -302,18 +249,88 @@ public class DBOperations {
        } catch (Exception e) {
            e.printStackTrace();
        }
-       //conn.close();
+       conn.close();
        return result;
    }
+    public static void setFavorite(String userid, String job_id){
+        //saveJob(job);
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        History history = new History();
+        history.setKey(new HistoryKey(userid, job_id));
+        session.saveOrUpdate(history);
+        session.getTransaction().commit();
+        session.close();
+//        saveKeyword(TFIDF(job_id),job_id);
+    }
 
+    public static void unsetFavorite(String userid, String job_id){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        History history = checkExist(job_id,userid);
 
+        if (history != null){
+            System.out.println("mdzz");
+            session.delete(history);
+            session.getTransaction().commit();
+        }
+        session.close();
 
+    }
 
+//    private static void saveKeyword(List<List<String>> keyList,String job_id){
+//        Session session = sessionFactory.openSession();
+//        session.beginTransaction();
+//        for (String key : keyList.get(0)){
+//            KeyWordsKey keykey= new KeyWordsKey(job_id,key);
+//            Keywords getKeyword = (Keywords) session.get(Keywords.class,keykey);
+//            if(getKeyword == null){
+//                Keywords keyword = new Keywords();
+//                keyword.setKey(keykey);
+//                session.saveOrUpdate(keyword);
+//            }
+//        }
+//        session.getTransaction().commit();
+//        session.close();
+//        return;
+//    }
+//
+//    public static List<List<String>> TFIDF(String job_id){
+//        Session session = sessionFactory.openSession();
+//        session.beginTransaction();
+//        Job job = (Job) session.get(Job.class,job_id);
+//        List<List<String>> keywords = new ArrayList<>();
+//        try {
+//            String description = job.getJob_description();
+//            MonkeyLearnClient client = new MonkeyLearnClient();
+//            keywords = client.extract(description);
+//        }catch(NullPointerException | IOException e){
+//            System.out.println(e.getMessage());
+//        }
+//        if (keywords.size() == 0){
+//            return keywords;
+//        }
+//        List<String> keyList = keywords.get(0);
+//        System.out.println(keyList.size());
+//        for(int i = 0; i < keyList.size(); i++){
+//            String keyword = keyList.get(i);
+//            //abbreviate key words
+//            for (String str : set){
+//                if (keyword.contains(str)){
+//                    keyList.set(i,str);
+//                    break;
+//                };
+//            }
+//        }
+//        for(String str : keywords.get(0)){
+//            System.out.println(str);
+//        }
+//        session.close();
+//
+//        return keywords;
+//    }
 
-
-
-
-    public static void close() {
+    public static void close(){
         if (conn != null) {
             try {
                 conn.close();
@@ -321,7 +338,7 @@ public class DBOperations {
                 e.printStackTrace();
             }
         }
-        if (sessionFactory != null) {
+        if(sessionFactory != null){
             sessionFactory.close();
         }
     }

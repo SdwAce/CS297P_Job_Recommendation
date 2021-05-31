@@ -3,10 +3,10 @@
   margin: 1 auto;
 }
 
-.top{
+/* .top{
   background-color: cadetblue;
   height: 48px;
-}
+} */
 
 .search_form h1{
   text-align: center;
@@ -16,4 +16,21 @@
 .result_table {
   table-layout: auto;
   width: 100%;  
+}
+
+.fancy-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.fancy-checkbox span:before {
+  font-family: "FontAwesome";
+  font-style: normal;
+  width: 1em;
+  height: 1em;
+  content: '\f004';
+  margin-right: .3em;
+}
+
+.fancy-checkbox input[type="checkbox"]:checked ~ span:before {
+  content: '\f004'; color: red;
 }

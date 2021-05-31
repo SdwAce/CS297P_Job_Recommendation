@@ -14,11 +14,15 @@ registerApp.controller("RegisterController",function($scope,$http)
 
         console.log($scope.data);
         $http({method: 'Post',url:'http://localhost:8080/Job_Recommendation/register',data:$scope.data})
-        .then(function(response)
+        .then(function success(response)
         {
-            console.log(response);
-            alert(Object.values(response.data));
-            window.location.href = "login.html"
+            if (response.data["Result"] === "User Already exists")
+            {
+                $scope.user_already_exist = "username " + $scope.username + " already exist";
+            }
+            else{
+                window.location.href = "login.html"
+            }
 
         }),function error(response)
         {

@@ -10,9 +10,10 @@
     height: 1em;
     content: '\f004';
     margin-right: .3em;
+    color: red;
   }
   
   .fancy-checkbox input[type="checkbox"]:checked ~ span:before {
-    content: '\f004'; color: red;
+    content: '\f004'; color:darkgray;
   }
   

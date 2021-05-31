@@ -83,6 +83,7 @@ public class SearchServlet extends HttpServlet {
             JSONObject entry = new JSONObject();
             entry.put("title",job.getJob_title());
             entry.put("job_id",job.getJob_id());
+            entry.put("job_description",job.getJob_description());
             entry.put("company",job.getCompany());
             entry.put("location",job.getLocation());
             entry.put("skill",request.getParameterValues("skill"));

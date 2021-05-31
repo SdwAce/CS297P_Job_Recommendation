@@ -1,48 +1,47 @@
-var LoginApp = angular.module("loginPage",["ngRoute"]);
+var LoginApp = angular.module("loginPage",["ngRoute","ngStorage"]);
 
-LoginApp.config(function ($routeProvider)
-{
-    $routeProvider.
-    when("/",{
-        templateUrl: "login1.html"
-    })
-    .when("/search",{
-        templateUrl: "search.html",
-        controller: "SearchController"
-    })
-    .otherwise({
-        redirectTo : "/"
-    });
-});
-
-LoginApp.controller("loginController",function($scope,$http,$location)
+LoginApp.controller("loginController",function($scope,$http,$location,$localStorage,$sessionStorage)
 {
     $scope.check_user = function(){
-        console.log($cope.username);
-        console.log($scope.password);
-        console.log("http://localhost:8080/Job_Recommendation/login",{data:{username:$scope.username,password:$scope.password}});
-        $http.post("http://localhost:8080/Job_Recommendation/login",{data:{username:$scope.username,password:$scope.password}})
+
+        $scope.data = {
+            "user_id": $scope.username,
+            "password": $scope.password
+        }
+
+        $http({method: 'Post', url:"http://localhost:8080/Job_Recommendation/login",data:$scope.data})
         .then(function success(response)
         {
             if (response.data)
             {
-                console.log(response.data);
-                // $scope.EnterSearchPage($location);
+                $localStorage.name = $scope.username;
+                window.location.href = "search.html";
+                // $http({method:"Get",url:"http://localhost:8080/Job_Recommendation/show"})
+                // .then(function success(response)
+                // {
+                //     console.log(response);
+                //     $scope.job_history = Object.values(response.data);
+
+                // },function error(response)
+                // {
+                //     console.log(response);
+                // })
             }
             else(response.data)
             {
-                alert(response);
+                console.log(response.data);
+                // alert(response);
             }
         },function error(response)
         {
-            console.log(response);
+            console.log(response.data);
         })
     }
 
 
     $scope.EnterSearchPage = function()
     {
-        $location.path("/search");
+        $location.path("./search");
     }
 
 })

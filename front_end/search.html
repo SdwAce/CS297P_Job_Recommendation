@@ -15,11 +15,16 @@
         <link href="template/css/sb-admin-2.min.css" rel="stylesheet">
         <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
         <script type = "text/javascript" src="script.js"></script>
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
         <link rel="stylesheet" type="text/css" href="search_style.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-sanitize.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-touch.js"></script>
+        <script src="ui-bootstrap-tpls-2.5.0.js"></script>
+        <link href="bootstrap-5.0.1/dist/css/bootstrap.css">
     </head>
 
     <body id="page-top" ng-controller="SearchController">
@@ -29,13 +34,13 @@
 
             <!-- Sidebar -->
             <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
-
+            
                 <!-- Divider -->
                 <hr class="sidebar-divider">
 
-                <div class="sidebar-heading">
+                <!-- <div class="sidebar-heading">
                     Addons
-                </div>
+                </div> -->
 
                 <li class="nav-item active">
                     <!-- <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
@@ -52,8 +57,8 @@
                             <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
                             <div class="collapse-divider"></div>
                             <h6 class="collapse-header">Other Pages:</h6> -->
-                            <button class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</button>
-                            <button class="collapse-item active" ng-click="display_history()">Favorite Jobs</button>
+                            <a class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</a>
+                            <a class="collapse-item active" ng-click="display_history()">Favorite Jobs</a>
                         </div>
                     </div>
                 </li>
@@ -77,19 +82,7 @@
                             <i class="fa fa-bars"></i>
                         </button>
 
-                        <!-- Topbar Search -->
-                        <!-- <form
-                            class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                    aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form> -->
+
 
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
@@ -117,17 +110,19 @@
 
                         <!-- Page Heading -->
                     
-                        <div >
+                        <div class="modal-demo">
                             <!-- <div class="top" >
                                 <h1>HireAnteaters<button ng-click = "logout()" class="btn btn-success pull-right">Logout</button></h1>
                             </div> -->
                             <br>
                             <div>Welcome,{{name}}</div>
                             <div class="alert alert-success" role="alert" ng-show="new_job_likes">{{new_job_likes}}</div>
+                            <div class="alert alert-warning" role="alert" ng-show="no_job">{{no_job}}</div>
                             <!-- <div class="container">
                                 <h1>What are you looking for?</h1> -->
                                 <!-- <div class="row">
                                     <div class="col-md-8"> -->
+                                        
                                         <form class="search_form">    
                                             <br>
                                             <input type = "text" class="form-control" placeholder="Job Title" ng-model="title" ng-model-instant>
@@ -141,38 +136,35 @@
                                             <br>
                                             <button class="btn btn-block btn-primary" ng-click="recommend()">Search</button>
                                         </form>
-                                    <!-- </div> -->
-                                    <!-- <div class = "col-md-16"> -->
-                                        <!-- <div> -->
-                                            <!-- <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                                <thead>
-                                                    <tr>
-                                                        <th>title</th>
-                                                        <th>location</th>
-                                                        <th>skillset</th>
-                                                        <th>company</th>
-                                                        <th>Interested?</th>
-                                                    </tr>
-                                                    <tr ng-repeat="x in job_listings">
-                                                        <td>{{x.title}}</td>
-                                                        <td>{{x.location}}</td>
-                                                        <td>{{x.skill[0]}}</td>
-                                                        <td>{{x.company}}</td>
-                                                        <td><input type="button" value="Likes" ng-click="Likes($index)" /></td>
-                                                    </tr>
-                                                </thead>
-                                                
-                                            </table> -->
-
+                                    
+                                        <script type="text/ng-template" id="Job_Description.html">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title" id="modal-title">{{items}}</h3>
+                                            </div>
+                                            <div class="modal-body" id="modal-body">
+                                                <ul>
+                                                    <!-- <li ng-repeat="item in $scope.items">
+                                                        <a href="#" ng-click="$event.preventDefault(); $scope.selected.item = item">{{ item }}</a>
+                                                    </li> -->
+                                                </ul>
+                                                <!-- Selected: <b>{{ $scope.selected.item }}</b> -->
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                                                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                                            </div>
+                                        </script>
+                                        
                                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                                 <tr>
-                                                    <th>title</th>
+                                                    <th><a href>title</a></th>
                                                     <th>location</th>
                                                     <th>skillset</th>
                                                     <th>company</th>
                                                 </tr>
                                                 <tr ng-repeat="x in job_listings">
-                                                    <td>{{x.title}}</td>
+                                                    <td><button type="button" class="btn btn-default" ng-click="open($index,'lg')">{{x.title}}</button>
+                                                        </td>
                                                     <td>{{x.location}}</td>
                                                     <td>{{x.skill}}</td>
                                                     <td>{{x.company}}</td>

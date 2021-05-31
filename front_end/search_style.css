@@ -8,6 +8,7 @@
   height: 48px;
 } */
 
+
 .search_form h1{
   text-align: center;
   color: black;
@@ -34,3 +35,7 @@
 .fancy-checkbox input[type="checkbox"]:checked ~ span:before {
   content: '\f004'; color: red;
 }
+
+
+/* Fix for Bootstrap 3 with Angular UI Bootstrap */
+
