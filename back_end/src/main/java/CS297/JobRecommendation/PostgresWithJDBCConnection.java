@@ -21,7 +21,7 @@ public class PostgresWithJDBCConnection {
 //    public static final String DATABASE_URL = "jdbc:postgresql://127.0.0.1:5432/job_recommender"; // LOCAL SETTINGS
 
     // output: surround + keyword1 + between + keyword2 + between + ... + between + keywordN + surround
-    private static String sandwichStringList(String[] keywords, String between, String surround) {
+    public static String sandwichStringList(String[] keywords, String between, String surround) {
         String returnStr = surround; // add open surrounding param
         for (int i = 0; i < keywords.length; i++) {
             returnStr = returnStr + keywords[i]; // add keyword
@@ -37,7 +37,7 @@ public class PostgresWithJDBCConnection {
     // before + keyword2 + after + between +
     // ... + between +
     // before + keywordN + after
-    private static String sandwichStringList(String[] keywords, String before, String after, String between) {
+    public static String sandwichStringList(String[] keywords, String before, String after, String between) {
         String returnStr = "";
         for (int i = 0; i < keywords.length; i++) {
             returnStr = returnStr + before + keywords[i] + after; // add before + keyword + after
@@ -157,7 +157,6 @@ public class PostgresWithJDBCConnection {
     }
 
     public static void main(String[] args) {
-        List <JobEntry> jobEntryList = new ArrayList < > ();
         String user_id = "";
         String[] keywords = {"senior", "CA", "java", "apple google"}; // FOR NOW: keyword search from static array
         String[] fields = {"job_title", "location", "skill", "company"}; // FOR NOW: keyword search from static array
