@@ -54,35 +54,58 @@ public class PostgresWithJDBCConnection {
                                        String[] fields,
                                        String user_id) throws SQLException {
 
-        // create SQL conditional statements according to which text-boxes were filled in
-        ArrayList<String> whereConditions = new ArrayList<>();
-        for (int i = 0; i < fields.length; i++) {
-            // depending on field to be searched; change the SQL condition
-            if (fields[i].equals("skill")) {
-                // searching job_description
-                String descriptionCond = "job_desc_tsv @@ to_tsquery(" +
-                        sandwichStringList(keywords[i].split(" "), "|", "'") +
-                        ")";
-                whereConditions.add(descriptionCond);
-            } else {
-                // searching job_title, company, or location
-                String shortColumnCond = fields[i] + " ~* " +
-                        sandwichStringList(keywords[i].split(" "), "|", "'");
-                whereConditions.add(shortColumnCond);
+//        // create SQL conditional statements according to which text-boxes were filled in
+//        ArrayList<String> whereConditions = new ArrayList<>();
+//        for (int i = 0; i < fields.length; i++) {
+//            // depending on field to be searched; change the SQL condition
+//            if (fields[i].equals("skill")) {
+//                // searching job_description
+//                String descriptionCond = "job_desc_tsv @@ to_tsquery(" +
+//                        sandwichStringList(keywords[i].split(" "), "|", "'") +
+//                        ")";
+//                whereConditions.add(descriptionCond);
+//            } else {
+//                // searching job_title, company, or location
+//                String shortColumnCond = fields[i] + " ~* " +
+//                        sandwichStringList(keywords[i].split(" "), "|", "'");
+//                whereConditions.add(shortColumnCond);
+//            }
+//        }
+//
+//        // combine all conditions into two sub-statements; a mathematical expression and a WHERE clause
+//        String[] conds = whereConditions.toArray(whereConditions.toArray(new String[fields.length]));
+//        String rank = "(" + sandwichStringList(conds,"CASE WHEN ", " THEN 1 ELSE 0 END", " + ") + ") AS rank";
+//        String whereStatement = "WHERE " + sandwichStringList(conds, " OR ", "");
+//
+//        // SQL query for database
+//        String keywordSearchQuery = "SELECT job_data.*, " +
+//                rank +
+//                " FROM job_data " +
+//                whereStatement +
+//                " ORDER BY rank DESC LIMIT 100";
+
+        // seperate keywords into single words
+        String tsquery = "";
+        List<String> singleWords = new ArrayList<>();
+        for (String s : keywords) {
+            String[] split = s.split(" ");
+            for (String subS : split) {
+                singleWords.add(subS);
             }
         }
+        // convert from List<String> to String[]
+        String[] singleWordsArr = new String[singleWords.size()];
+        singleWordsArr = singleWords.toArray(singleWordsArr);
 
-        // combine all conditions into two sub-statements; a mathematical expression and a WHERE clause
-        String[] conds = whereConditions.toArray(whereConditions.toArray(new String[fields.length]));
-        String rank = "(" + sandwichStringList(conds,"CASE WHEN ", " THEN 1 ELSE 0 END", " + ") + ") AS rank";
-        String whereStatement = "WHERE " + sandwichStringList(conds, " OR ", "");
+        // construct regular expression for keyword search
+        tsquery = sandwichStringList(singleWordsArr,"|","'");
 
-        // SQL query for database
+        // SQL query
         String keywordSearchQuery = "SELECT job_data.*, " +
-                rank +
-                " FROM job_data " +
-                whereStatement +
-                " ORDER BY rank DESC LIMIT 100";
+                "ts_rank(document_with_weights, "+tsquery+") AS rank " +
+                "FROM job_data " +
+                "WHERE document_with_weights @@ "+tsquery+" " +
+                "ORDER BY rank DESC LIMIT 100";
 
 //        // if user_id is not empty string; mark the jobs from user's favorite list
 //        if (!(user_id.equals(""))) {
@@ -102,13 +125,8 @@ public class PostgresWithJDBCConnection {
             ResultSet rs = stmt.executeQuery(keywordSearchQuery);
 
             // retrieve results from query
-            int i = 0;
             DBOperations db = new DBOperations();
             while (rs.next()) {
-                if (i == 20) {
-                    break;
-                }
-                i++;
                 // retrieve data from query
                 String job_id = rs.getString("job_id");
                 String title = rs.getString("job_title");

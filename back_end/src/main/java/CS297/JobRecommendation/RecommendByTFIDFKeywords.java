@@ -28,9 +28,9 @@ public class RecommendByTFIDFKeywords {
 
         // SQL query to get job recommendations from TF-IDF keywords
         String getFavoritesQuery = "SELECT job_data.*, " +
-                "ts_rank(job_desc_tsv, tsquery, 32) AS rank " +
+                "ts_rank(document_with_weights, tsquery, 32) AS rank " +
                 "FROM job_data, " + tsquery + " tsquery " +
-                "WHERE job_desc_tsv @@ tsquery " +
+                "WHERE document_with_weights @@ tsquery " +
                 "ORDER BY rank DESC LIMIT 100";
 
         System.out.println("Query: " + getFavoritesQuery);
@@ -130,7 +130,7 @@ public class RecommendByTFIDFKeywords {
         String user_id = "diwen";
         List<Job> jobEntryList = new ArrayList<>();
         List<Double> ranks = new ArrayList<>();
-        Double mlWeight = 0.9;
+        Double mlWeight = 0.3;
         Double tsWeight = 1.0;
 
         getRecommendations(user_id, jobEntryList, ranks, mlWeight, tsWeight);
