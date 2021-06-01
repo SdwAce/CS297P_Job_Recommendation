@@ -1,5 +1,7 @@
 package CS297.JobRecommendation;
 
+import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ import weka.classifiers.trees.RandomTree;
 import weka.core.Instance;
 import weka.core.Instances; // wrapper for datasets
 import weka.core.converters.DatabaseLoader; // load data from postgres
+import weka.experiment.InstanceQuery;
 import weka.filters.unsupervised.attribute.NumericToBinary;
 
 public class FavoriteJobsPredictor {
@@ -96,7 +99,7 @@ public class FavoriteJobsPredictor {
         }
         String[] phrases = new String[keyphrases.size()];
         phrases = keyphrases.toArray(phrases);
-        String tsquery = PostgresWithJDBCConnection.sandwichStringList(phrases, "job_desc_tsv @@ phraseto_tsquery('", "')", " OR ");
+        String tsquery = PostgresWithJDBCConnection.sandwichStringList(phrases, "document_with_weights @@ phraseto_tsquery('", "')", " OR ");
 
         // in case keywords have not been generated for this user's favorite jobs
         if (tsquery.equals("")) {
@@ -117,14 +120,16 @@ public class FavoriteJobsPredictor {
 //                    "(SELECT history.jobid AS job_id FROM job_data INNER JOIN history ON history.jobid = job_data.job_id WHERE history.userid = '" + user_id + "' LIMIT 1000) AS dumfav " +
 //                "ON job_data.job_id = dumfav.job_id";
 
+        File file = new File("back_end/src/main/resources/DatabaseUtils.props");
+
         // query for database
         wekaDBLoader.setQuery(mlQuery);
+        wekaDBLoader.setCustomPropsFile(file);
         System.out.println("MLQuery: " + mlQuery);
 
         // get data and meta data
         Instances data = wekaDBLoader.getDataSet();
-        System.out.println(data.attribute("favorite"));
-        Instances dataFormat= wekaDBLoader.getStructure();
+        Instances dataFormat = wekaDBLoader.getStructure();
 
         // apply filter to cast type
         NumericToBinary numtobin = new NumericToBinary();
@@ -195,7 +200,7 @@ public class FavoriteJobsPredictor {
 
     public static void main(String[] args) {
         try {
-            String user_id = "Andrew yu";
+            String user_id = "diwen";
             FavoriteJobsPredictor predictor = new FavoriteJobsPredictor();
             Classifier classifier = predictor.getClassifier(user_id);
             predictor.printRecommendations(classifier);
