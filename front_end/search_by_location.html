@@ -18,15 +18,17 @@
         <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
         <script type = "text/javascript" src="script.js"></script>
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
-        <!-- <link rel="stylesheet" type="text/css" href="search_style.css" /> -->
         <script type = "text/javascript" src="RecommendLocationControl.js"></script>
         <link href="location.css" rel="stylesheet">
-        <!-- <script src="./ui-bootstrap-2.5.0.js"></script> -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyC4e1giN_S4ZIkr2yyI2_713hSV3NiLI80"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-sanitize.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-touch.js"></script>
+        <script src="ui-bootstrap-tpls-2.5.0.js"></script>
+        <link href="bootstrap-5.0.1/dist/css/bootstrap.css">
     </head>
 
     <body id="page-top" ng-controller="RecommendLocationController">
@@ -86,34 +88,36 @@
                             <i class="fa fa-bars"></i>
                         </button>
 
-                        <!-- Topbar Search -->
-                        <!-- <form
-                            class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                    aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form> -->
-
-                        <!-- Topbar Navbar -->
-
 
                     </nav>
                     <!-- End of Topbar -->
 
                     <!-- Begin Page Content -->
+                    <div class="modal-demo">
                     <div class="container-fluid" ng-controller="RecommendLocationController">
 
                         <!-- Page Heading -->
-                        <div id='jobMap' >Map is supposed to be here</div>
+                        <div id='jobMap' ></div>
                         
                         
-
+                        <script type="text/ng-template" id="Job_Description.html">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="modal-title">Job Description</h3>
+                            </div>
+                            <div class="modal-body" id="modal-body">
+                                <ul>
+                                    {{items}}
+                                    <!-- <li ng-repeat="item in $scope.items">
+                                        <a href="#" ng-click="$event.preventDefault(); $scope.selected.item = item">{{ item }}</a>
+                                    </li> -->
+                                </ul>
+                                <!-- Selected: <b>{{ $scope.selected.item }}</b> -->
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                            </div>
+                        </script>
                         <!-- <body ng-controller="RecommendLocationController"> -->
                             <div class="top"><h1>Jobs By Location</h1></div>
                             <div class="alert alert-success" role="alert" ng-show="new_job_likes">{{new_job_likes}}</div>
@@ -134,14 +138,10 @@
                                                     <th>Interested</th>
                                                 </tr>
                                                 <tr ng-repeat="x in jobs_by_location">
-                                                    <td>{{x.job_title}}</td>
+                                                    <td><button type="button" class="btn btn-default" ng-click="open($index,'lg')">{{x.job_title}}</button>
+                                                    </td>
                                                     <td>{{x.company}}</td>
                                                     <td>{{x.location}}</td>
-                                                    <!-- <td><input type="button" value="Likes" ng-click="Likes($index)" /></td> -->
-                                                    <!-- <td><i ng-click="Likes(this,$index)" class="fa fa-thumbs-up"></i></tr> -->
-                                                    <!-- <td><input type="checkbox" id="heart" class="like-btn">
-                                                    <label class="fa fa-heart" for="heart">
-                                                    </td> -->
                                                     <td><label class="fancy-checkbox">
                                                         <input type="checkbox" />
                                                         <span ng-click=Likes($index)></span>
@@ -161,6 +161,7 @@
                         
 
                     </div>
+                </div> 
                     <!-- /.container-fluid -->
 
                 </div>

@@ -1,6 +1,6 @@
-var app = angular.module("FavoriteJobHistory",["ngStorage"]);
+var app = angular.module("FavoriteJobHistory",["ngStorage",'ngAnimate', 'ngSanitize', 'ui.bootstrap']);
 
-app.controller("JobHistoryController",function($http,$scope,$localStorage)
+app.controller("JobHistoryController",function($http,$scope,$localStorage,$uibModal, $log, $document)
 {
 
     $scope.name = $localStorage.name;
@@ -65,6 +65,56 @@ app.controller("JobHistoryController",function($http,$scope,$localStorage)
     }
 
     
+    // $scope.items = ['item1', 'item2', 'item3'];
+  
+    $scope.animationsEnabled = true;
+  
+    $scope.open = function (index,size, parentSelector) {
+      var parentElem = parentSelector ? 
+        angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+        console.log(parentElem);
 
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'Job_Description.html',
+        controller: 'ModalInstanceCtrl',
+        // controllerAs: '$ctrl',
+        size: size,
+        appendTo: parentElem,
+        resolve: {
+          items: function () {
+            return $scope.job_history[index].job_description;
+          }
+        }
+      });
+      console.log(123);
+  
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+      console.log(456);
+    };
     
 })
+
+
+app.controller('ModalInstanceCtrl', function ($uibModalInstance, items, $scope) {
+    // var $ctrl = this;
+    console.log(123);
+    $scope.items = items;
+    // $scope.selected = {
+    //   item: $scope.items[0]
+    // };
+  
+    $scope.ok = function () {
+      $uibModalInstance.close($scope.selected.item);
+    };
+    console.log(789);
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+  });

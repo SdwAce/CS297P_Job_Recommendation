@@ -100,7 +100,7 @@ public class RecommendByTFIDFKeywords {
         }
     }
 
-    public static void getRecommendations(String user_id,
+    public static List<Job> getRecommendations(String user_id,
                                           List<Job> jobEntryList,
                                           List<Double> ranks,
                                           Double mlWeight,
@@ -123,6 +123,7 @@ public class RecommendByTFIDFKeywords {
         // sort jobEntryList by their rank stored in ranks list
         Collections.sort(jobEntryList, Comparator.comparingDouble(ranks::indexOf).reversed());
         Collections.sort(ranks, Comparator.comparingDouble(Double::doubleValue).reversed());
+        return jobEntryList;
     }
 
     public static void main(String[] args) {

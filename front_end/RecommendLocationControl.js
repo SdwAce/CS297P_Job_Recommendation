@@ -1,6 +1,6 @@
-var app = angular.module("RecommendationByLocation",["ngStorage"]);
+var app = angular.module("RecommendationByLocation",["ngStorage",'ngAnimate', 'ngSanitize', 'ui.bootstrap']);
 
-app.controller("RecommendLocationController",function($scope,$http,$localStorage)
+app.controller("RecommendLocationController",function($scope,$http,$localStorage,$uibModal, $log, $document)
 {
 
     console.log($localStorage.name);
@@ -127,5 +127,56 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
         window.location.href = "search_by_location.html";
     }
 
+    $scope.items = ['item1', 'item2', 'item3'];
+  
+    $scope.animationsEnabled = true;
+  
+    $scope.open = function (index,size, parentSelector) {
+      var parentElem = parentSelector ? 
+        angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
+        console.log(parentElem);
+
+      var modalInstance = $uibModal.open({
+        animation: $scope.animationsEnabled,
+        ariaLabelledBy: 'modal-title',
+        ariaDescribedBy: 'modal-body',
+        templateUrl: 'Job_Description.html',
+        controller: 'ModalInstanceCtrl',
+        // controllerAs: '$ctrl',
+        size: size,
+        appendTo: parentElem,
+        resolve: {
+          items: function () {
+            return $scope.jobs_by_location[index].job_description;
+          }
+        }
+      });
+      console.log(123);
+  
+      modalInstance.result.then(function (selectedItem) {
+        $scope.selected = selectedItem;
+      }, function () {
+        $log.info('Modal dismissed at: ' + new Date());
+      });
+      console.log(456);
+    };
+
 })
 
+
+app.controller('ModalInstanceCtrl', function ($uibModalInstance, items, $scope) {
+    // var $ctrl = this;
+    console.log(123);
+    $scope.items = items;
+    // $scope.selected = {
+    //   item: $scope.items[0]
+    // };
+  
+    $scope.ok = function () {
+      $uibModalInstance.close($scope.selected.item);
+    };
+    console.log(789);
+    $scope.cancel = function () {
+      $uibModalInstance.dismiss('cancel');
+    };
+  });

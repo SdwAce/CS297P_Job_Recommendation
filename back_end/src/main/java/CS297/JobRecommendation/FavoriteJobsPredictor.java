@@ -123,6 +123,7 @@ public class FavoriteJobsPredictor {
 
         // get data and meta data
         Instances data = wekaDBLoader.getDataSet();
+        System.out.println(data.attribute("favorite"));
         Instances dataFormat= wekaDBLoader.getStructure();
 
         // apply filter to cast type

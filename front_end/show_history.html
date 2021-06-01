@@ -14,12 +14,16 @@
         <link href="template/css/sb-admin-2.min.css" rel="stylesheet">
         <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
         <script type = "text/javascript" src="job_history.js"></script>
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
         <link href="history_style.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
+        
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-sanitize.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-touch.js"></script>
+        <script src="ui-bootstrap-tpls-2.5.0.js"></script>
+        <link href="bootstrap-5.0.1/dist/css/bootstrap.css">
     </head>
 
     <body id="page-top" ng-controller="JobHistoryController">
@@ -73,61 +77,11 @@
                     <!-- Topbar -->
                     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-                        <!-- Sidebar Toggle (Topbar) -->
-                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                            <i class="fa fa-bars"></i>
-                        </button>
-
-                        <!-- Topbar Search -->
-                        <form
-                            class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group">
-                                <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                    aria-label="Search" aria-describedby="basic-addon2">
-                                <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fas fa-search fa-sm"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
 
-                            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                            <li class="nav-item dropdown no-arrow d-sm-none">
-                                <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <i class="fas fa-search fa-fw"></i>
-                                </a>
-                                <!-- Dropdown - Messages -->
-                                <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
-                                    aria-labelledby="searchDropdown">
-                                    <form class="form-inline mr-auto w-100 navbar-search">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control bg-light border-0 small"
-                                                placeholder="Search for..." aria-label="Search"
-                                                aria-describedby="basic-addon2">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary" type="button">
-                                                    <i class="fas fa-search fa-sm"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </li>
-
-
-                            
-
                             <div class="topbar-divider d-none d-sm-block"></div>
-
-                    
-
                         </ul>
-
                     </nav>
                     <!-- End of Topbar -->
 
@@ -135,22 +89,35 @@
                     <div class="container-fluid" >
                         <!-- Page Heading -->
                     
-                        <div >
+                        <div class="modal-demo">
                             <!-- <div class="top" >
                                 <h1>HireAnteaters<button ng-click = "logout()" class="btn btn-success pull-right">Logout</button></h1>
                             </div> -->
+                            <script type="text/ng-template" id="Job_Description.html">
+                                <div class="modal-header">
+                                    <h3 class="modal-title" id="modal-title">Job Description</h3>
+                                </div>
+                                <div class="modal-body" id="modal-body">
+                                    <ul>
+                                        {{items}}
+                                    </ul>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                                    <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                                </div>
+                            </script>
                             <br>
                             <h1>Favorite Jobs</h1>
                             <br>
 
                             
-                            <!-- <div class="container">
-                                <h1>What are you looking for?</h1> -->
-                                <!-- <div class="row">
-                                    <div class="col-md-8"> -->
-                                    <!-- </div> -->
-                                    <!-- <div class = "col-md-16"> -->
-                                        <!-- <div> -->
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                    </div>
+                                    <div class = "col-md-16">
+                                        <div>
                                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                                 <tr>
                                                     <th>title</th>
@@ -159,7 +126,8 @@
                                                     <th></th>
                                                 </tr>
                                                 <tr ng-repeat="x in job_history">
-                                                    <td>{{x.job_title}}</td>
+                                                    <td><button type="button" class="btn btn-default" ng-click="open($index,'lg')">{{x.job_title}}</button>
+                                                    </td>
                                                     <td>{{x.location}}</td>
                                                     <td>{{x.company}}</td>
                                                     <td><label class="fancy-checkbox">
@@ -168,10 +136,10 @@
                                                     </label></td>
                                                 </tr>
                                             </table>
-                                        <!-- </div> -->
-                                    <!-- </div> -->
-                                <!-- </div> -->
-                            <!-- </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         
 

@@ -1,5 +1,5 @@
 var app = angular.module("JobRecommendation", ["ngStorage",'ngAnimate', 'ngSanitize', 'ui.bootstrap']);
-app.controller("SearchController",function($scope,$http,$localStorage,$sessionStorage,$uibModal, $log, $document)
+app.controller("SearchController",function($scope,$http,$localStorage,$uibModal, $log, $document)
 {
 
     $scope.name = $localStorage.name;
