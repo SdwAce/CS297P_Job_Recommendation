@@ -88,9 +88,12 @@ public class PostgresWithJDBCConnection {
         String tsquery = "";
         List<String> singleWords = new ArrayList<>();
         for (String s : keywords) {
-            String[] split = s.split(" ");
-            for (String subS : split) {
-                singleWords.add(subS);
+            if (!s.equals(""))
+            {
+                String[] split = s.split(" ");
+                for (String subS : split) {
+                    singleWords.add(subS);
+                }
             }
         }
         // convert from List<String> to String[]
@@ -102,9 +105,11 @@ public class PostgresWithJDBCConnection {
 
         // SQL query
         String keywordSearchQuery = "SELECT job_data.*, " +
-                "ts_rank(document_with_weights, "+tsquery+") AS rank " +
-                "FROM job_data " +
-                "WHERE document_with_weights @@ "+tsquery+" " +
+                "ts_rank(document_with_weights, tsquery) AS rank " +
+                "FROM job_data LEFT JOIN (SELECT jobid FROM History WHERE userid = '" + user_id +
+                    "') t2 ON job_data.job_id = t2.jobid, " +
+                    "to_tsquery(" + tsquery + ") tsquery " +
+                "WHERE document_with_weights @@ tsquery AND t2.jobid IS NULL " +
                 "ORDER BY rank DESC LIMIT 100";
 
 //        // if user_id is not empty string; mark the jobs from user's favorite list
@@ -125,7 +130,7 @@ public class PostgresWithJDBCConnection {
             ResultSet rs = stmt.executeQuery(keywordSearchQuery);
 
             // retrieve results from query
-            DBOperations db = new DBOperations();
+//            DBOperations db = new DBOperations();
             while (rs.next()) {
                 // retrieve data from query
                 String job_id = rs.getString("job_id");
@@ -144,9 +149,9 @@ public class PostgresWithJDBCConnection {
 
                 // if job is a favorite
 
-                if (db.checkExist(job_id, user_id) != null) {
-                    job.setFavorite(true);
-                }
+//                if (db.checkExist(job_id, user_id) != null) {
+//                    job.setFavorite(true);
+//                }
 
                 // add job object to return object
                 jobEntryList.add(job);
