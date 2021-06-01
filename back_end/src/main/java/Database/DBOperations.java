@@ -9,13 +9,10 @@ import java.security.Key;
 import java.sql.*;
 import java.util.*;
 
-//import External.MonkeyLearnClient;
+import External.MonkeyLearnClient;
 import Model.*;
-//import org.apache.lucene.search.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-//import org.hibernate.search.FullTextSession;
-//import org.hibernate.search.query.dsl.QueryBuilder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
@@ -38,7 +35,9 @@ public class DBOperations {
         //searchNearJobs(Double.valueOf(-117),Double.valueOf(34));
         //showHistory("diwen");
         sessionFactory =  (SessionFactory) context.getBean("sessionFactory");
-        setFavorite("diwen","f8f2458c-05b7-4ab6-a424-be6a371f1e96");
+        //setFavorite("diwen","f8f2458c-05b7-4ab6-a424-be6a371f1e96");
+        //checkProfileExist("diwen");
+        saveProfile("diwen","diwens3@uci.edu","Computer Science","undergraduate",false);
         close();
 
     }
@@ -261,7 +260,7 @@ public class DBOperations {
         session.saveOrUpdate(history);
         session.getTransaction().commit();
         session.close();
-//        saveKeyword(TFIDF(job_id),job_id);
+        saveKeyword(TFIDF(job_id),job_id);
     }
 
     public static void unsetFavorite(String userid, String job_id){
@@ -278,57 +277,135 @@ public class DBOperations {
 
     }
 
-//    private static void saveKeyword(List<List<String>> keyList,String job_id){
-//        Session session = sessionFactory.openSession();
-//        session.beginTransaction();
-//        for (String key : keyList.get(0)){
-//            KeyWordsKey keykey= new KeyWordsKey(job_id,key);
-//            Keywords getKeyword = (Keywords) session.get(Keywords.class,keykey);
-//            if(getKeyword == null){
-//                Keywords keyword = new Keywords();
-//                keyword.setKey(keykey);
-//                session.saveOrUpdate(keyword);
-//            }
-//        }
-//        session.getTransaction().commit();
-//        session.close();
-//        return;
-//    }
-//
-//    public static List<List<String>> TFIDF(String job_id){
-//        Session session = sessionFactory.openSession();
-//        session.beginTransaction();
-//        Job job = (Job) session.get(Job.class,job_id);
-//        List<List<String>> keywords = new ArrayList<>();
-//        try {
-//            String description = job.getJob_description();
-//            MonkeyLearnClient client = new MonkeyLearnClient();
-//            keywords = client.extract(description);
-//        }catch(NullPointerException | IOException e){
-//            System.out.println(e.getMessage());
-//        }
-//        if (keywords.size() == 0){
-//            return keywords;
-//        }
-//        List<String> keyList = keywords.get(0);
-//        System.out.println(keyList.size());
-//        for(int i = 0; i < keyList.size(); i++){
-//            String keyword = keyList.get(i);
-//            //abbreviate key words
-//            for (String str : set){
-//                if (keyword.contains(str)){
-//                    keyList.set(i,str);
-//                    break;
-//                };
-//            }
-//        }
-//        for(String str : keywords.get(0)){
-//            System.out.println(str);
-//        }
-//        session.close();
-//
-//        return keywords;
-//    }
+    private static void saveKeyword(List<List<String>> keyList,String job_id){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        for (String key : keyList.get(0)){
+            KeyWordsKey keykey= new KeyWordsKey(job_id,key);
+            Keywords getKeyword = (Keywords) session.get(Keywords.class,keykey);
+            if(getKeyword == null){
+                Keywords keyword = new Keywords();
+                keyword.setKey(keykey);
+                session.saveOrUpdate(keyword);
+            }
+        }
+        session.getTransaction().commit();
+        session.close();
+        return;
+    }
+    public static Profile checkProfileExist(String user_id) {
+        Profile profile = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            conn = DriverManager.getConnection(RDSConfig.URL);
+
+            if (conn == null) {
+                return profile;
+            }
+
+            //in (SELECT jobid FROM history where userid = ?)
+            String sql = "SELECT * FROM profile where user_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, user_id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()){
+                profile = new Profile();
+                profile.setUser_id(rs.getString("user_id"));
+                profile.setEmail(rs.getString("uci_email"));
+                profile.setMajor(rs.getString("major"));
+                profile.setLevel(rs.getString("education_level"));
+                profile.setFind_Job(rs.getBoolean("found_job"));
+           }
+
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return profile;
+    }
+    public static void saveProfile(String user_id, String email, String major, String level, boolean found_job){
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            conn = DriverManager.getConnection(RDSConfig.URL);
+
+            if (conn == null) {
+                return;
+            }
+
+            //in (SELECT jobid FROM history where userid = ?)
+            Profile profile = checkProfileExist(user_id);
+            PreparedStatement statement;
+            if (profile == null) {
+                String sql2 = "INSERT INTO profile (user_id,uci_email,major,education_level,found_job) VALUES (?, ?, ?, ?, ?)";
+
+                try {
+                    statement = conn.prepareStatement(sql2);
+                    statement.setString(1, user_id);
+                    statement.setString(2, email);
+                    statement.setString(3, major);
+                    statement.setString(4, level);
+                    statement.setBoolean(5, found_job);
+                    statement.executeQuery();
+
+                } catch (SQLException e) {
+                }
+
+            } else {
+                System.out.println("hhh");
+                String sql3 = "UPDATE profile " +
+                        "SET uci_email = ?,major = ?, education_level = ?, found_job = ? WHERE user_id = ?";
+                try {
+                    statement = conn.prepareStatement(sql3);
+                    statement.setString(5, user_id);
+                    statement.setString(1, email);
+                    statement.setString(2, major);
+                    statement.setString(3, level);
+                    statement.setBoolean(4, found_job);
+                    statement.executeQuery();
+                } catch (SQLException e) {
+                }
+                //System.out.println("Import done successfully");
+            }
+            }catch(Exception e){
+            e.printStackTrace();
+            }
+
+    }
+
+    public static List<List<String>> TFIDF(String job_id){
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        Job job = (Job) session.get(Job.class,job_id);
+        List<List<String>> keywords = new ArrayList<>();
+        try {
+            String description = job.getJob_description();
+            MonkeyLearnClient client = new MonkeyLearnClient();
+            keywords = client.extract(description);
+        }catch(NullPointerException | IOException e){
+            System.out.println(e.getMessage());
+        }
+        if (keywords.size() == 0){
+            return keywords;
+        }
+        List<String> keyList = keywords.get(0);
+        System.out.println(keyList.size());
+        for(int i = 0; i < keyList.size(); i++){
+            String keyword = keyList.get(i);
+            //abbreviate key words
+            for (String str : set){
+                if (keyword.contains(str)){
+                    keyList.set(i,str);
+                    break;
+                };
+            }
+        }
+        for(String str : keywords.get(0)){
+            System.out.println(str);
+        }
+        session.close();
+
+        return keywords;
+    }
 
     public static void close(){
         if (conn != null) {

@@ -59,6 +59,8 @@
                             <h6 class="collapse-header">Other Pages:</h6> -->
                             <a class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</a>
                             <a class="collapse-item active" ng-click="display_history()">Favorite Jobs</a>
+                            <a class="collapse-item active" ng-click="display_profile()">Profile</a>
+                            <a class="collapse-item" href="search.html">Search</a>
                         </div>
                     </div>
                 </li>
@@ -144,12 +146,8 @@
                                             <div class="modal-body" id="modal-body">
                                                 <ul>
                                                     {{items}}
-                                                    <!-- <li ng-repeat="item in $scope.items">
-                                                        <a href="#" ng-click="$event.preventDefault(); $scope.selected.item = item">{{ item }}</a>
-                                                    </li> -->
                                                 </ul>
-                                                <!-- Selected: <b>{{ $scope.selected.item }}</b> -->
-                                            </div>
+                                             </div>
                                             <div class="modal-footer">
                                                 <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
                                                 <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
@@ -202,24 +200,6 @@
         </a>
 
         <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Bootstrap core JavaScript-->
         <!-- <script src="vendor/jquery/jquery.min.js"></script>

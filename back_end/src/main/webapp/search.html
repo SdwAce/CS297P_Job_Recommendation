@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html ng-app="JobRecommendation">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>HireAnteaters</title>
+
+        <!-- Custom fonts for this template-->
+        <link href="template/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+        <link
+            href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+            rel="stylesheet">
+
+        <!-- Custom styles for this template-->
+        <link href="template/css/sb-admin-2.min.css" rel="stylesheet">
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
+        <script type = "text/javascript" src="script.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="search_style.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-animate.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-sanitize.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-touch.js"></script>
+        <script src="ui-bootstrap-tpls-2.5.0.js"></script>
+        <link href="bootstrap-5.0.1/dist/css/bootstrap.css">
+    </head>
+
+    <body id="page-top" ng-controller="SearchController">
+
+        <!-- Page Wrapper -->
+        <div id="wrapper">
+
+            <!-- Sidebar -->
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            
+                <!-- Divider -->
+                <hr class="sidebar-divider">
+
+                <!-- <div class="sidebar-heading">
+                    Addons
+                </div> -->
+
+                <li class="nav-item active">
+                    <!-- <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
+                        aria-controls="collapsePages">
+                        <i class="fas fa-fw fa-folder"></i>
+                        <span>Pages</span>
+                    </a> -->
+                    <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
+                        data-parent="#accordionSidebar">
+                        <div class="bg-white py-2 collapse-inner rounded">
+                            <!-- <h6 class="collapse-header">Login Screens:</h6> -->
+                            <!-- <a class="collapse-item" href="login.html">Login</a>
+                            <a class="collapse-item" href="register.html">Register</a>
+                            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+                            <div class="collapse-divider"></div>
+                            <h6 class="collapse-header">Other Pages:</h6> -->
+                            <a class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</a>
+                            <a class="collapse-item active" ng-click="display_history()">Favorite Jobs</a>
+                            <a class="collapse-item active" ng-click="display_profile()">Profile</a>
+                            <a class="collapse-item" href="search.html">Search</a>
+                            <a class="collapse-item active" href="Recommendation.html">Recommendation By Preference</a>
+                        </div>
+                    </div>
+                </li>
+
+                
+
+            </ul>
+            <!-- End of Sidebar -->
+
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
+
+                <!-- Main Content -->
+                <div id="content">
+
+                    <!-- Topbar -->
+                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                        <!-- Sidebar Toggle (Topbar) -->
+                        <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                            <i class="fa fa-bars"></i>
+                        </button>
+
+
+
+                        <!-- Topbar Navbar -->
+                        <ul class="navbar-nav ml-auto">
+
+                           
+
+                            
+
+                            
+
+                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <!-- Nav Item - User Information -->
+                            <div class="top" >
+                                <button ng-click = "logout()" class="btn btn-success pull-right">Logout</button>
+                            </div>
+
+                        </ul>
+
+                    </nav>
+                    <!-- End of Topbar -->
+
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid" >
+
+                        <!-- Page Heading -->
+                    
+                        <div class="modal-demo">
+                            <!-- <div class="top" >
+                                <h1>HireAnteaters<button ng-click = "logout()" class="btn btn-success pull-right">Logout</button></h1>
+                            </div> -->
+                            <br>
+                            <div>Welcome,{{name}}</div>
+                            <div class="alert alert-success" role="alert" ng-show="new_job_likes">{{new_job_likes}}</div>
+                            <div class="alert alert-warning" role="alert" ng-show="no_job">{{no_job}}</div>
+                            <!-- <div class="container">
+                                <h1>What are you looking for?</h1> -->
+                                <!-- <div class="row">
+                                    <div class="col-md-8"> -->
+                                        
+                                        <form class="search_form">    
+                                            <br>
+                                            <input type = "text" class="form-control" placeholder="Job Title" ng-model="title" ng-model-instant>
+                                            <br>
+                                            <input type = "text" class="form-control" placeholder="Location" ng-model="location" ng-model-instant>
+                                            <br>
+                                            <input type = "text" class="form-control" placeholder="Skills" ng-model="skill" ng-model-instant>
+                                            <br>
+                                            <input type = "text" class="form-control" placeholder="Company" ng-model="company" ng-model-instant>
+                                            <br>
+                                            <br>
+                                            <button class="btn btn-block btn-primary" ng-click="recommend()">Search</button>
+                                        </form>
+                                    
+                                        <script type="text/ng-template" id="Job_Description.html">
+                                            <div class="modal-header">
+                                                <h3 class="modal-title" id="modal-title">Job Description</h3>
+                                            </div>
+                                            <div class="modal-body" id="modal-body">
+                                                <ul>
+                                                    {{items}}
+                                                </ul>
+                                             </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+                                                <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+                                            </div>
+                                        </script>
+                                        
+                                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                                <tr>
+                                                    <th><a href>title</a></th>
+                                                    <th>location</th>
+                                                    <th>skillset</th>
+                                                    <th>company</th>
+                                                </tr>
+                                                <tr ng-repeat="x in job_listings">
+                                                    <td><button type="button" class="btn btn-default" ng-click="open($index,'lg')">{{x.title}}</button>
+                                                        </td>
+                                                    <td>{{x.location}}</td>
+                                                    <td>{{x.skill}}</td>
+                                                    <td>{{x.company}}</td>
+                                                    <!-- <td><input type="button" value="Likes" ng-click="Likes($index)" /></td> -->
+                                                    <td><label class="fancy-checkbox">
+                                                        <input type="checkbox" />
+                                                        <span ng-click=Likes($index)></span>
+                                                    </label></td>
+                                                </tr>
+                                            </table>
+                                        <!-- </div> -->
+                                    <!-- </div> -->
+                                <!-- </div> -->
+                            <!-- </div> -->
+                        </div>
+                        
+
+                    </div>
+                    <!-- /.container-fluid -->
+
+                </div>
+                <!-- End of Main Content -->
+
+
+            </div>
+            <!-- End of Content Wrapper -->
+
+        </div>
+        <!-- End of Page Wrapper -->
+
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
+
+        <!-- Logout Modal-->
+
+        <!-- Bootstrap core JavaScript-->
+        <!-- <script src="vendor/jquery/jquery.min.js"></script>
+        <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script> -->
+
+        <!-- Core plugin JavaScript-->
+        <!-- <script src="vendor/jquery-easing/jquery.easing.min.js"></script> -->
+
+        <!-- Custom scripts for all pages-->
+        
+
+    </body>
+
+</html>
