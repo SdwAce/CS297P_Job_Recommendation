@@ -15,7 +15,6 @@
         <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.js"></script>
         <script type = "text/javascript" src="RecommendationController.js"></script>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous"> -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.10/ngStorage.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="recommendation_style.css" />
@@ -133,7 +132,8 @@
                                                     <th></th>
                                                 </tr>
                                                 <tr ng-repeat="x in job_history">
-                                                    <td>{{x.job_title}}</td>
+                                                    <td><button type="button" class="btn btn-default" ng-click="open($index,'lg')">{{x.job_title}}</button>
+                                                    </td>
                                                     <td>{{x.location}}</td>
                                                     <td>{{x.company}}</td>
                                                     <td><label class="fancy-checkbox">

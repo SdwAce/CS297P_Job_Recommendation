@@ -113,7 +113,7 @@ app.controller("RecommendationController",function($http,$scope,$localStorage,$u
         appendTo: parentElem,
         resolve: {
           items: function () {
-            return $scope.job_listings[index].job_description;
+            return $scope.job_history[index].job_description;
           }
         }
       });

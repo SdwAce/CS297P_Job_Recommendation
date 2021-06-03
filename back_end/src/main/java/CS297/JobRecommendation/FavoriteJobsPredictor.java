@@ -129,11 +129,9 @@ public class FavoriteJobsPredictor {
 
         // get data and meta data
         Instances data = wekaDBLoader.getDataSet();
-<<<<<<< HEAD
+
         Instances dataFormat= wekaDBLoader.getStructure();
-=======
-        Instances dataFormat = wekaDBLoader.getStructure();
->>>>>>> b53b4b8bd186c24063af9deebe23f110a3995298
+
 
         // apply filter to cast type
         NumericToBinary numtobin = new NumericToBinary();
