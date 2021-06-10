@@ -1,6 +1,7 @@
 package Servlet;
 
 import Database.DBOperations;
+import Database.DBOperations_Hibernate;
 import Model.ResultResponse;
 import Model.SaveRequestBody;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,9 +19,10 @@ public class SetFavoriteServlet extends HttpServlet {
         response.setContentType("application/json");
         ObjectMapper mapper = new ObjectMapper();
         SaveRequestBody saveRequest = mapper.readValue(request.getReader(),SaveRequestBody.class);
-        DBOperations db = new DBOperations();
+        DBOperations_Hibernate db = new DBOperations_Hibernate();
         db.setFavorite(saveRequest.getUser_id(), saveRequest.getJob_id());
         ResultResponse resultResponse = new ResultResponse("OK");
+        db.close();
         mapper.writeValue(response.getWriter(), resultResponse);
     }
 
@@ -44,6 +46,7 @@ public class SetFavoriteServlet extends HttpServlet {
         DBOperations db = new DBOperations();
         db.unsetFavorite(saveRequest.getUser_id(), saveRequest.getJob_id());
         ResultResponse resultResponse = new ResultResponse("OK");
+        db.close();
         mapper.writeValue(resp.getWriter(), resultResponse);
     }
 }

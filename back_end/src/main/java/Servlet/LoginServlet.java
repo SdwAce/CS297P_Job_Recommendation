@@ -1,6 +1,7 @@
 package Servlet;
 
 import Database.DBOperations;
+import Database.DBOperations_Hibernate;
 import Model.LoginResponse;
 import Model.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Enumeration;
 
 @WebServlet(name = "LoginServlet",urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
@@ -23,14 +23,9 @@ public class LoginServlet extends HttpServlet {
         ObjectMapper mapper = new ObjectMapper();
         //deserializer
         User user = mapper.readValue(request.getReader(), User.class);
+        //System.out.println(user.getUser_id());
         DBOperations db = new DBOperations();
         LoginResponse loginResponse;
-        Enumeration<String> parameterNames = request.getParameterNames();
-        while (parameterNames.hasMoreElements()) {
-            String paramName = parameterNames.nextElement();
-            System.out.println(paramName);
-            System.out.println(request.getParameterValues(paramName));
-        }
 
         String[] result = db.login(user.getUser_id(), user.getPassword());
 
@@ -43,23 +38,12 @@ public class LoginServlet extends HttpServlet {
             loginResponse = new LoginResponse(null,"Login Failed, user_id or password does not exist",null);
             response.setStatus(401);
         }
+        db.close();
 
         response.setContentType("application/json");
         mapper.writeValue(response.getWriter(),loginResponse);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        HttpSession session = request.getSession(false);
-        LoginResponse loginResponse;
-        if (session != null){
-            DBOperations db = new DBOperations();
-            loginResponse = new LoginResponse(session.getAttribute("user_id").toString(), "OK",db.getFirstName(session.getAttribute("user_id").toString()));
-       }else{
-            loginResponse = new LoginResponse(null, "Invalid Session", null);
-            response.setStatus(403);
-        }
-        response.setContentType("application/json");
-        mapper.writeValue(response.getWriter(), loginResponse);
     }
 }

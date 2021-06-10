@@ -27,6 +27,7 @@ public class SearchNearbyServlet extends HttpServlet {
         SearchNearbyRequest search_request = mapper.readValue(request.getReader(),SearchNearbyRequest.class);
         DBOperations db = new DBOperations();
         List<Job> jobs = db.searchNearJobs(search_request.getUser_id(), Double.parseDouble(search_request.getLon()), Double.parseDouble(search_request.getLat()));
+        db.close();
         response.getWriter().print(mapper.writeValueAsString(jobs));
 
 

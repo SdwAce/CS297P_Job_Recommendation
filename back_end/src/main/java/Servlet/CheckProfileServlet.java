@@ -20,6 +20,7 @@ public class CheckProfileServlet extends HttpServlet {
         DBOperations db = new DBOperations();
         Profile profile = db.checkProfileExist(show_request.getUser_id());
         response.setContentType("application/json");
+        db.close();
         mapper.writeValue(response.getWriter(), profile);
     }
 

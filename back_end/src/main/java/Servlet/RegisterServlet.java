@@ -1,6 +1,7 @@
 package Servlet;
 
 import Database.DBOperations;
+import Database.DBOperations_Hibernate;
 import Model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONObject;
@@ -19,7 +20,7 @@ public class RegisterServlet extends HttpServlet {
         //deserializer, jackson
         User user = mapper.readValue(request.getReader(), User.class);
 
-        DBOperations db = new DBOperations();
+        DBOperations_Hibernate db = new DBOperations_Hibernate();
         response.setContentType("application/json");
         JSONObject json = new JSONObject();
         if (db.register(user)){
@@ -27,6 +28,7 @@ public class RegisterServlet extends HttpServlet {
         }else{
             json.put("Result","User Already exists");
         }
+        db.close();
         response.getWriter().print(json);
     }
 

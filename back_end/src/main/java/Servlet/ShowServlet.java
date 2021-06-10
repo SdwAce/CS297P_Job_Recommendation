@@ -24,42 +24,14 @@ public class ShowServlet extends HttpServlet {
 
         DBOperations db = new DBOperations();
         List<Job> jobs = null;
-        try {
-            jobs = db.showHistory(show_request.getUser_id());
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
+
+        jobs = db.showHistory(show_request.getUser_id());
+        db.close();
         response.getWriter().print(mapper.writeValueAsString(jobs));
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        ObjectMapper mapper = new ObjectMapper();
-        if (session == null) {
-            response.setStatus(403);
-            mapper.writeValue(response.getWriter(), new ResultResponse("Session Invalid"));
-            return;
-        }
-        DBOperations db = new DBOperations();
-        List<Job> jobs = null;
-        try {
-            jobs = db.showHistory(session.getAttribute("user_id").toString());
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
-        response.getWriter().print(mapper.writeValueAsString(jobs));
+
 
     }
 }
