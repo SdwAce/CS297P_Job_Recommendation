@@ -1,7 +1,12 @@
 #modal-body{
   white-space: pre-line;
 }
-
+#peter{
+  float:center;
+  object-fit: scale-down;
+  width: 200px;
+  height: 200px;
+}
 
 .fancy-checkbox input[type="checkbox"] {
     display: none;

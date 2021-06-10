@@ -16,7 +16,7 @@ app.controller("RecommendationController",function($http,$scope,$localStorage,$u
         $scope.liked_jobs = [];
         for (i = 0; i < $scope.job_history.length; ++i)
         {
-            $scope.liked_jobs.push(1);
+            $scope.liked_jobs.push(0);
         }
 
     },function error(response)
@@ -42,7 +42,7 @@ app.controller("RecommendationController",function($http,$scope,$localStorage,$u
             $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
             .then(function success(response)
             {
-                // $scope.new_job_likes = $scope.job_history[index].job_title + " is added to your favorite list. ";
+                $scope.new_job_likes = $scope.job_history[index].job_title + " is added to your favorite list. ";
                 console.log(response);
                 $scope.liked_jobs[index] = 1;
             }, function error(response)
@@ -54,7 +54,7 @@ app.controller("RecommendationController",function($http,$scope,$localStorage,$u
             $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
             .then(function success(response)
             {
-                $scope.unfavorite = $scope.job_listings[index].title + "has been removed from your favorite list";
+                $scope.unfavorite = $scope.job_history[index].job_title + "has been removed from your favorite list";
                 $scope.liked_jobs[index] = 0;
             }, function error(response)
             {

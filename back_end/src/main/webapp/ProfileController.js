@@ -52,10 +52,7 @@ app.controller("ProfileController",function($scope,$localStorage,$http,$document
         $http({method:"Post",url:"http://localhost:8080/Job_Recommendation/profile",data:request})
         .then(function success (response)
         {
-            console.log(response);
-            
-            
-            
+            $scope.submitted = true;
 
         }, function error(response)
         {

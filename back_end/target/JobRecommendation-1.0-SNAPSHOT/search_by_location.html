@@ -57,7 +57,7 @@
                   </li>
                 </ul>
                 <hr>
-
+                <img id="peter" src="https://assets.bigcartel.com/product_images/270656339/83CD4095-8FE7-4258-80DB-6737FF17A96E.png?auto=format&fit=max&w=1000">
             </div>
             <!-- End of Sidebar -->
 
@@ -100,9 +100,6 @@
                             <div class="modal-body" id="modal-body">
                                 
                                     {{items}}
-                                    <!-- <li ng-repeat="item in $scope.items">
-                                        <a href="#" ng-click="$event.preventDefault(); $scope.selected.item = item">{{ item }}</a>
-                                    </li> -->
                                 
                             </div>
                             <div class="modal-footer">
@@ -111,14 +108,15 @@
                             </div>
                         </script>
                         <!-- <body ng-controller="RecommendLocationController"> -->
-                            <div class="top"><h1>Jobs By Location</h1></div>
+                            <!-- <div class="top"><h1>Jobs By Location</h1></div> -->
                             <div class="alert alert-success" role="alert" ng-show="new_job_likes">{{new_job_likes}}</div>
                             <div class="alert alert-danger alert-dismissible" role="alert"  ng-show="unfavorite">{{unfavorite}}</div>
-                            <button class="btn btn-block btn-success"ng-click="getLocation()">Generate Recommendations</button>
+                            
                             <div class="card shadow mb-4">
-                                <!-- <div class="card-header py-3"> -->
-                                    <!-- <h6 class="m-0 font-weight-bold text-primary">Jobs By Location</h6> -->
-                                <!-- </div> -->
+                                <div class="card-header py-3">
+                                    <h3 class="m-0 font-weight-bold text">Jobs By Location</h3>
+                                </div>
+                                <button class="btn btn-block btn-primary"ng-click="getLocation()">Generate Recommendations</button>
                                 <div class="card-body">
                                     <div class="table-responsive">
 

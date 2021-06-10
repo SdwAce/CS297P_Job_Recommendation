@@ -1,11 +1,28 @@
 .search_form{
-  max-width: 400px;
+  max-width: 600px;
   margin: 1 auto;
 }
 
 #modal-body{
   white-space: pre-line;
 }
+
+
+img{
+  float:right;
+  object-fit: scale-down;
+  width: 500px;
+  height: 400px;
+}
+
+#peter{
+  float:center;
+  object-fit: scale-down;
+  width: 200px;
+  height: 200px;
+}
+
+
 
 .ng-hide:not(.ng-hide-animate) {
   /* These are just alternative ways of hiding an element */
