@@ -116,7 +116,6 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
             .then(function success(response)
             {
                 $scope.new_job_likes = $scope.jobs_by_location[index].job_title + " is added to your favorite list. ";
-                console.log(response);
                 $scope.liked_jobs[index] = 1;
             }, function error(response)
             {
@@ -127,8 +126,7 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
             $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
             .then(function success(response)
             {
-                console.log(response);
-                alert("It is deleted");
+                $scope.unfavorite = $scope.jobs_by_location[index].job_title + "has been removed from your favorite list";
                 $scope.liked_jobs[index] = 0;
             }, function error(response)
             {

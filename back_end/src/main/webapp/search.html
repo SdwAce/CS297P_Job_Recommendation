@@ -35,53 +35,27 @@
             <!-- Sidebar -->
 
             <!-- second sidebar -->
-            <div class="nav nav-sidebar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 230px;">
-                <!-- <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-                  <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-                  <span class="fs-4">Sidebar</span>
-                </a> -->
+            <div class="nav nav-sidebar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 230px;" id="navigation">
                 <hr>
                 <ul class="nav nav-pills flex-column mb-auto">
-                  <!-- <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">
-                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                      Home
-                    </a>
-                  </li> -->
                   <li>
                     <a class="nav-link text-white" ng-click="display_profile()"><i class="fas fa-address-card"></i> Profile</a>
-                    <!-- <a href="#" class="nav-link text-white">
-                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-                      Dashboard
-                    </a> -->
                   </li>
                   <li>
                     <a class="nav-link text-white" href="search.html"><i class="fas fa-search"></i> Search</a>
-                    <!-- <a href="#" class="nav-link text-white">
-                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                      Orders
-                    </a> -->
                   </li>
                   <li>
                     <a class="nav-link text-white" ng-click="display_history()"><i class="fab fa-gratipay"></i> Favorite Jobs</a>
-                        <!-- <a href="#" class="nav-link text-white">
-                        <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                        Products
-                        </a> -->
                   </li>
                   <li>
                     <a class="nav-link text-white" ng-click="display_location_recommendation()"><i class="fas fa-map-marked-alt"></i> Recommend By Location</a>
-                    <!-- <a href="#" class="nav-link text-white">
-                      <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                      Customers
-                    </a> -->
                   </li>
                   <li>
                     <a class="nav-link text-white" href="Recommendation.html"><i class="far fa-list-alt"></i>   Recommendation List</a>
                   </li>
                 </ul>
                 <hr>
-
+                <img id="peter" src="https://assets.bigcartel.com/product_images/270656339/83CD4095-8FE7-4258-80DB-6737FF17A96E.png?auto=format&fit=max&w=1000">
             </div>
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
@@ -90,7 +64,7 @@
                 <div id="content" style="height: 100vh;">
 
                     <!-- Topbar -->
-                    <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+                    <nav id="top" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
                         <!-- Sidebar Toggle (Topbar) -->
                         <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
@@ -131,20 +105,28 @@
                                     <h3 class="m-0 font-weight-bold text">Welcome,{{name}}</h3>
                                 </div>
                                 <div class = "card-body">
+                                    <div class="row">
+                                        <div class="col-lg-6 mb-4">
+                                            <form class="search_form">    
+                                                <!-- <br> -->
+                                                <input type = "text" class="form-control" placeholder="Job Title" ng-model="title" ng-model-instant>
+                                                <br>
+                                                <input type = "text" class="form-control" placeholder="Location" ng-model="location" ng-model-instant>
+                                                <br>
+                                                <input type = "text" class="form-control" placeholder="Skills" ng-model="skill" ng-model-instant>
+                                                <br>
+                                                <input type = "text" class="form-control" placeholder="Company" ng-model="company" ng-model-instant>
+                                                <br>
+                                                <br>
+                                                <button class="btn btn-block btn-primary" ng-click="recommend()">Search</button>
+                                            </form>
+                                        </div>
+                                        <div class="col-lg-6 mb-4">
+                                            <img src="https://i.pinimg.com/originals/09/18/de/0918de2bda2c32cfbb4566ed4f8e9834.jpg">
+                                        </div>
+                                    </div>
                                     
-                                    <form class="search_form">    
-                                        <!-- <br> -->
-                                        <input type = "text" class="form-control" placeholder="Job Title" ng-model="title" ng-model-instant>
-                                        <br>
-                                        <input type = "text" class="form-control" placeholder="Location" ng-model="location" ng-model-instant>
-                                        <br>
-                                        <input type = "text" class="form-control" placeholder="Skills" ng-model="skill" ng-model-instant>
-                                        <br>
-                                        <input type = "text" class="form-control" placeholder="Company" ng-model="company" ng-model-instant>
-                                        <br>
-                                        <br>
-                                        <button class="btn btn-block btn-primary" ng-click="recommend()">Search</button>
-                                    </form>
+                                    
                                 </div>
                             </div>
                                     
@@ -174,10 +156,9 @@
                                                     <td>{{x.location}}</td>
                                                     <td>{{x.skill}}</td>
                                                     <td>{{x.company}}</td>
-                                                    <!-- <td><input type="button" value="Likes" ng-click="Likes($index)" /></td> -->
                                                     <td><label class="fancy-checkbox">
                                                         <input type="checkbox" />
-                                                        <span data-dismiss="alert" class="close" ng-click=Likes($index)></span>
+                                                        <span ng-click=Likes($index)></span>
                                                     </label></td>
                                                 </tr>
                                             </table>
@@ -202,9 +183,9 @@
         <!-- End of Page Wrapper -->
 
         <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
+        <!-- <a class="scroll-to-top rounded" href="#page-top">
             <i class="fas fa-angle-up"></i>
-        </a>
+        </a> -->
 
         <!-- Logout Modal-->
 

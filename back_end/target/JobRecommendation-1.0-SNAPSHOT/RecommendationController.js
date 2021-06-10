@@ -54,8 +54,7 @@ app.controller("RecommendationController",function($http,$scope,$localStorage,$u
             $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
             .then(function success(response)
             {
-                console.log(response);
-                alert("It is deleted");
+                $scope.unfavorite = $scope.job_listings[index].title + "has been removed from your favorite list";
                 $scope.liked_jobs[index] = 0;
             }, function error(response)
             {
@@ -91,6 +90,7 @@ app.controller("RecommendationController",function($http,$scope,$localStorage,$u
             console.log(error);
         })
     };
+
 
     // var $scope = this;
     $scope.items = ['item1', 'item2', 'item3'];

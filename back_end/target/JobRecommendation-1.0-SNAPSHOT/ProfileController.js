@@ -78,4 +78,16 @@ app.controller("ProfileController",function($scope,$localStorage,$http,$document
     {
         window.location.href = "profile.html";
     }
+
+    $scope.logout =  function () {
+        $http({method: 'Post', url:"http://localhost:8080/Job_Recommendation/logout"})
+        .then(function success(response)
+        {
+            window.location.href = "login.html";
+        },
+        function(error)
+        {
+            console.log(error);
+        })
+    };
 })

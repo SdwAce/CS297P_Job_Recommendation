@@ -54,8 +54,7 @@ app.controller("JobHistoryController",function($http,$scope,$localStorage,$uibMo
             $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
             .then(function success(response)
             {
-                console.log(response);
-                alert("It is deleted");
+              $scope.unfavorite = $scope.job_listings[index].title + "has been removed from your favorite list";
                 $scope.liked_jobs[index] = 0;
             }, function error(response)
             {
@@ -64,8 +63,34 @@ app.controller("JobHistoryController",function($http,$scope,$localStorage,$uibMo
         }
     }
 
-    
-    // $scope.items = ['item1', 'item2', 'item3'];
+    $scope.display_history = function ()
+    {
+        console.log(123);
+        window.location.href = "show_history.html";
+    }
+
+    $scope.display_location_recommendation = function ()
+    {
+        window.location.href = "search_by_location.html";
+    }
+
+
+    $scope.display_profile = function()
+    {
+        window.location.href = "profile.html";
+    }
+
+    $scope.logout =  function () {
+      $http({method: 'Post', url:"http://localhost:8080/Job_Recommendation/logout"})
+      .then(function success(response)
+      {
+          window.location.href = "login.html";
+      },
+      function(error)
+      {
+          console.log(error);
+      })
+    };
   
     $scope.animationsEnabled = true;
   

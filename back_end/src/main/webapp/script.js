@@ -80,7 +80,6 @@ app.controller("SearchController",function($scope,$http,$localStorage,$uibModal,
             .then(function success(response)
             {
                 $scope.new_job_likes = $scope.job_listings[index].title + " has been added to your favorite list";
-                // alert("It went through")
                 $scope.liked_jobs[index] = 1;
                 console.log(response);
             }, function error(response)

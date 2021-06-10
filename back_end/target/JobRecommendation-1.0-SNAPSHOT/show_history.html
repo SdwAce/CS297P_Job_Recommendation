@@ -32,38 +32,35 @@
         <div id="wrapper">
 
             <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <div class="nav nav-sidebar d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 230px;">
+                <hr>
+                <ul class="nav nav-pills flex-column mb-auto">
+                  <li>
+                    <a class="nav-link text-white" ng-click="display_profile()"><i class="fas fa-address-card"></i> Profile</a>
+                  </li>
+                  <li>
+                    <a class="nav-link text-white" href="search.html"><i class="fas fa-search"></i> Search</a>
+                  </li>
+                  <li>
+                    <a class="nav-link text-white" ng-click="display_history()"><i class="fab fa-gratipay"></i> Favorite Jobs</a>
+                  </li>
+                  <li>
+                    <a class="nav-link text-white" ng-click="display_location_recommendation()"><i class="fas fa-map-marked-alt"></i> Recommend By Location</a>
+                  </li>
+                  <li>
+                    <a class="nav-link text-white" href="Recommendation.html"><i class="far fa-list-alt"></i>   Recommendation List</a>
+                  </li>
+                </ul>
+                <hr>
 
-                <!-- Divider -->
-                <hr class="sidebar-divider">
-
-                <!-- Heading -->
-
-
-                <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item active">
-                    <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
-                        data-parent="#accordionSidebar">
-                        <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item active" ng-click="display_profile()">Profile</a>
-                            <a class="collapse-item" href="search.html">Search</a>
-                            <a class="collapse-item active" ng-click="display_history()">Favorite Jobs</a>
-                            <a class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</a>
-                            <a class="collapse-item active" href="Recommendation.html">Recommendation List</a>
-                        </div>
-                    </div>
-                </li>
-
-                
-
-            </ul>
+            </div>
             <!-- End of Sidebar -->
 
             <!-- Content Wrapper -->
             <div id="content-wrapper" class="d-flex flex-column">
 
                 <!-- Main Content -->
-                <div id="content">
+                <div id="content" style="height: 100vh;">
 
                     <!-- Topbar -->
                     <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -95,9 +92,7 @@
                                     <h3 class="modal-title" id="modal-title">Job Description</h3>
                                 </div>
                                 <div class="modal-body" id="modal-body">
-                                    <ul>
-                                        {{items}}
-                                    </ul>
+                                    {{items}}
                                 </div>
                                 <div class="modal-footer">
                                     <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
@@ -111,6 +106,7 @@
                             
                             <div class="container-fluid">
                                 <div class="card shadow mb-4">
+                                    <div class="alert alert-danger alert-dismissible" role="alert"  ng-show="unfavorite">{{unfavorite}}</div>
                                     <div class="card-header py-3">
                                         <h6 class="m-0 font-weight-bold text-primary">Result</h6>
                                     </div>
