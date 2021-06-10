@@ -3,11 +3,17 @@
   margin: 1 auto;
 }
 
-/* .top{
-  background-color: cadetblue;
-  height: 48px;
-} */
+#modal-body{
+  white-space: pre-line;
+}
 
+.ng-hide:not(.ng-hide-animate) {
+  /* These are just alternative ways of hiding an element */
+  display: block!important;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
 
 .search_form h1{
   text-align: center;

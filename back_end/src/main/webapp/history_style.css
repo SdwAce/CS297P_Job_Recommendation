@@ -1,3 +1,6 @@
+#modal-body{
+  white-space: pre-line;
+}
 
 .fancy-checkbox input[type="checkbox"] {
     display: none;

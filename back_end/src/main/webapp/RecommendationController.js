@@ -92,6 +92,7 @@ app.controller("RecommendationController",function($http,$scope,$localStorage,$u
         })
     };
 
+
     // var $scope = this;
     $scope.items = ['item1', 'item2', 'item3'];
   

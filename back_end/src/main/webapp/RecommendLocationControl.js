@@ -3,27 +3,24 @@ var app = angular.module("RecommendationByLocation",["ngStorage",'ngAnimate', 'n
 app.controller("RecommendLocationController",function($scope,$http,$localStorage,$uibModal, $log, $document)
 {
 
-    console.log($localStorage.name);
+
     $scope.name = $localStorage.name;
     $scope.getLocation = function ($localStorage,$sessionStorage)
     {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function success(response)
             {     
-
-                console.log(response.coords.latitude.toString());
-                console.log(response.coords.longitude.toString());
                 var locationData = {
                     "lon": response.coords.longitude.toString(),
                     "lat": response.coords.latitude.toString(),
                     "user_id": $scope.name
                 }
+
+
                 $http({method:'Post',url:"http://localhost:8080/Job_Recommendation/searchnearby",data:locationData})
                 .then(function success(response)
                 {
                     var jobs = Object.values(response.data);
-
-                    console.log(jobs);
 
                     $scope.jobs_by_location = [];
 
@@ -36,14 +33,33 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
                             $scope.liked_jobs.push(0);
                         }
                     }
-                    // console.log($scope.jobs_by_location);
+
                     var mapOptions = {
                         zoom: 4,
                         center: new google.maps.LatLng(locationData.lat,locationData.lon),
                         mapTypeId: google.maps.MapTypeId.TERRAIN
                     };
 
+                    
+
                     $scope.mymapdetail = new google.maps.Map(document.getElementById('jobMap'), mapOptions);
+                    var url = "http://maps.google.com/mapfiles/ms/icons/";
+                    var marker = new google.maps.Marker({
+                        map: $scope.mymapdetail,
+                        icon: url + "yellow-dot.png",
+                        position: new google.maps.LatLng(parseFloat(locationData.lat), parseFloat(locationData.lon)),
+                        title: "Home"
+                        });
+            
+                        marker.description = new google.maps.InfoWindow({
+                            content: "Current Location"
+                        });
+            
+                        google.maps.event.addListener(marker, 'click', function(){
+                            this.description.setPosition(this.getPosition());
+                            this.description.open($scope.mymapdetail); //map to display on
+                          });
+                    
                     $scope.addMarkers($scope.jobs_by_location);
 
                 },function error(response)
@@ -61,17 +77,23 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
     $scope.addMarkers = function (jobs)
     {
         var url = "http://maps.google.com/mapfiles/ms/icons/";
-        var colors = ["purple","blue","pink","yellow","green"]
         for (i = 0; i < jobs.length; ++i)
         {
-            console.log(jobs[i].lat);
-            console.log(jobs[i].lon);
-            new google.maps.Marker({
+            var marker = new google.maps.Marker({
             map: $scope.mymapdetail,
-            icon: url + colors[i%5] +"-dot.png",
+            icon: url + "green-dot.png",
             position: new google.maps.LatLng(jobs[i].lat, jobs[i].lon),
             title: "work location"
             });
+
+            marker.description = new google.maps.InfoWindow({
+                content: "Job Title: " + jobs[i].job_title + "\nCompany: " + jobs[i].company
+            });
+
+            google.maps.event.addListener(marker, 'click', function(){
+                this.description.setPosition(this.getPosition());
+                this.description.open($scope.mymapdetail); //map to display on
+              });
         }
     }
 
@@ -80,7 +102,6 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
 
     $scope.Likes = function (index)
     {
-        // sel.toggle("fa-thumbs-down");
         var jobId = $scope.jobs_by_location[index].job_id;
         var test_data = {
             user_id : $scope.name,
@@ -127,7 +148,23 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
         window.location.href = "search_by_location.html";
     }
 
-    $scope.items = ['item1', 'item2', 'item3'];
+    $scope.display_profile = function()
+    {
+        window.location.href = "profile.html";
+    }
+
+    $scope.logout =  function () {
+        $http({method: 'Post', url:"http://localhost:8080/Job_Recommendation/logout"})
+        .then(function success(response)
+        {
+            window.location.href = "login.html";
+        },
+        function(error)
+        {
+            console.log(error);
+        })
+    };
+
   
     $scope.animationsEnabled = true;
   
@@ -142,7 +179,6 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
         ariaDescribedBy: 'modal-body',
         templateUrl: 'Job_Description.html',
         controller: 'ModalInstanceCtrl',
-        // controllerAs: '$ctrl',
         size: size,
         appendTo: parentElem,
         resolve: {
@@ -158,19 +194,15 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
       }, function () {
         $log.info('Modal dismissed at: ' + new Date());
       });
-      console.log(456);
     };
 
 })
 
 
 app.controller('ModalInstanceCtrl', function ($uibModalInstance, items, $scope) {
-    // var $ctrl = this;
-    console.log(123);
+
     $scope.items = items;
-    // $scope.selected = {
-    //   item: $scope.items[0]
-    // };
+
   
     $scope.ok = function () {
       $uibModalInstance.close($scope.selected.item);

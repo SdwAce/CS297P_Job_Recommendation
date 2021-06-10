@@ -10,9 +10,6 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function success(response)
             {     
-
-                console.log(response.coords.latitude.toString());
-                console.log(response.coords.longitude.toString());
                 var locationData = {
                     "lon": response.coords.longitude.toString(),
                     "lat": response.coords.latitude.toString(),
@@ -61,17 +58,23 @@ app.controller("RecommendLocationController",function($scope,$http,$localStorage
     $scope.addMarkers = function (jobs)
     {
         var url = "http://maps.google.com/mapfiles/ms/icons/";
-        var colors = ["purple","blue","pink","yellow","green"]
         for (i = 0; i < jobs.length; ++i)
         {
-            console.log(jobs[i].lat);
-            console.log(jobs[i].lon);
-            new google.maps.Marker({
+            var marker = new google.maps.Marker({
             map: $scope.mymapdetail,
-            icon: url + colors[i%5] +"-dot.png",
+            icon: url + "green-dot.png",
             position: new google.maps.LatLng(jobs[i].lat, jobs[i].lon),
             title: "work location"
             });
+
+            marker.description = new google.maps.InfoWindow({
+                content: jobs[i].job_title
+            });
+
+            google.maps.event.addListener(marker, 'click', function(){
+                this.description.setPosition(this.getPosition());
+                this.description.open($scope.mymapdetail); //map to display on
+              });
         }
     }
 

@@ -51,16 +51,10 @@
                     <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <!-- <h6 class="collapse-header">Login Screens:</h6> -->
-                            <!-- <a class="collapse-item" href="login.html">Login</a>
-                            <a class="collapse-item" href="register.html">Register</a>
-                            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                            <div class="collapse-divider"></div>
-                            <h6 class="collapse-header">Other Pages:</h6> -->
-                            <a class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</a>
-                            <a class="collapse-item active" ng-click="display_history()">Favorite Jobs</a>
                             <a class="collapse-item active" ng-click="display_profile()">Profile</a>
                             <a class="collapse-item" href="search.html">Search</a>
+                            <a class="collapse-item active" ng-click="display_history()">Favorite Jobs</a>
+                            <a class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</a>
                             <a class="collapse-item active" href="Recommendation.html">Recommendation List</a>
                         </div>
                     </div>
@@ -118,27 +112,30 @@
                                 <h1>HireAnteaters<button ng-click = "logout()" class="btn btn-success pull-right">Logout</button></h1>
                             </div> -->
                             <br>
-                            <div>Welcome,{{name}}</div>
+                            
                             <div class="alert alert-success" role="alert" ng-show="new_job_likes">{{new_job_likes}}</div>
                             <div class="alert alert-warning" role="alert" ng-show="no_job">{{no_job}}</div>
-                            <!-- <div class="container">
-                                <h1>What are you looking for?</h1> -->
-                                <!-- <div class="row">
-                                    <div class="col-md-8"> -->
-                                        
-                                        <form class="search_form">    
-                                            <br>
-                                            <input type = "text" class="form-control" placeholder="Job Title" ng-model="title" ng-model-instant>
-                                            <br>
-                                            <input type = "text" class="form-control" placeholder="Location" ng-model="location" ng-model-instant>
-                                            <br>
-                                            <input type = "text" class="form-control" placeholder="Skills" ng-model="skill" ng-model-instant>
-                                            <br>
-                                            <input type = "text" class="form-control" placeholder="Company" ng-model="company" ng-model-instant>
-                                            <br>
-                                            <br>
-                                            <button class="btn btn-block btn-primary" ng-click="recommend()">Search</button>
-                                        </form>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h3 class="m-0 font-weight-bold text">Welcome,{{name}}</h3>
+                                </div>
+                                <div class = "card-body">
+                                    
+                                    <form class="search_form">    
+                                        <!-- <br> -->
+                                        <input type = "text" class="form-control" placeholder="Job Title" ng-model="title" ng-model-instant>
+                                        <br>
+                                        <input type = "text" class="form-control" placeholder="Location" ng-model="location" ng-model-instant>
+                                        <br>
+                                        <input type = "text" class="form-control" placeholder="Skills" ng-model="skill" ng-model-instant>
+                                        <br>
+                                        <input type = "text" class="form-control" placeholder="Company" ng-model="company" ng-model-instant>
+                                        <br>
+                                        <br>
+                                        <button class="btn btn-block btn-primary" ng-click="recommend()">Search</button>
+                                    </form>
+                                </div>
+                            </div>
                                     
                                         <script type="text/ng-template" id="Job_Description.html">
                                             <div class="modal-header">

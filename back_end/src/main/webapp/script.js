@@ -92,8 +92,7 @@ app.controller("SearchController",function($scope,$http,$localStorage,$uibModal,
             $http({method:"Delete",url:"http://localhost:8080/Job_Recommendation/save",data:test_data})
             .then(function success(response)
             {
-                console.log(response);
-                alert("It is deleted");
+                $scope.unfavorite = $scope.job_listings[index].title + "has been removed from your favorite list";
                 $scope.liked_jobs[index] = 0;
             }, function error(response)
             {
@@ -131,15 +130,15 @@ app.controller("SearchController",function($scope,$http,$localStorage,$uibModal,
     };
 
     // var $scope = this;
-    $scope.items = ['item1', 'item2', 'item3'];
+    // $scope.items = ['item1', 'item2', 'item3'];
   
     $scope.animationsEnabled = true;
   
     $scope.open = function (index,size, parentSelector) {
       var parentElem = parentSelector ? 
         angular.element($document[0].querySelector('.modal-demo ' + parentSelector)) : undefined;
-        console.log(parentElem);
 
+        console.log($scope.job_listings[index].job_description);
       var modalInstance = $uibModal.open({
         animation: $scope.animationsEnabled,
         ariaLabelledBy: 'modal-title',
@@ -155,14 +154,12 @@ app.controller("SearchController",function($scope,$http,$localStorage,$uibModal,
           }
         }
       });
-      console.log(123);
   
       modalInstance.result.then(function (selectedItem) {
         $scope.selected = selectedItem;
       }, function () {
         $log.info('Modal dismissed at: ' + new Date());
       });
-      console.log(456);
     };
 
     
@@ -170,7 +167,6 @@ app.controller("SearchController",function($scope,$http,$localStorage,$uibModal,
 
 app.controller('ModalInstanceCtrl', function ($uibModalInstance, items, $scope) {
     // var $ctrl = this;
-    console.log(123);
     $scope.items = items;
     // $scope.selected = {
     //   item: $scope.items[0]
@@ -179,7 +175,7 @@ app.controller('ModalInstanceCtrl', function ($uibModalInstance, items, $scope) 
     $scope.ok = function () {
       $uibModalInstance.close($scope.selected.item);
     };
-    console.log(789);
+
     $scope.cancel = function () {
       $uibModalInstance.dismiss('cancel');
     };

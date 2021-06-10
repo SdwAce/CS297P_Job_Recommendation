@@ -38,27 +38,17 @@
                 <hr class="sidebar-divider">
 
                 <!-- Heading -->
-                <div class="sidebar-heading">
-                    Addons
-                </div>
+
 
                 <!-- Nav Item - Pages Collapse Menu -->
                 <li class="nav-item active">
-                    <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-                        aria-controls="collapsePages">
-                        <i class="fas fa-fw fa-folder"></i>
-                        <span>Pages</span>
-                    </a>
                     <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
                         data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <h6 class="collapse-header">Login Screens:</h6>
-                            <a class="collapse-item" href="login.html">Login</a>
-                            <a class="collapse-item" href="register.html">Register</a>
-                            <div class="collapse-divider"></div>
-                            <h6 class="collapse-header">Other Pages:</h6>
-                            <a class="collapse-item" href="search_by_location.html">Recommend By Location</a>
+                            <a class="collapse-item active" ng-click="display_profile()">Profile</a>
                             <a class="collapse-item" href="search.html">Search</a>
+                            <a class="collapse-item active" ng-click="display_history()">Favorite Jobs</a>
+                            <a class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</a>
                             <a class="collapse-item active" href="Recommendation.html">Recommendation List</a>
                         </div>
                     </div>
@@ -82,6 +72,12 @@
                         <ul class="navbar-nav ml-auto">
 
                             <div class="topbar-divider d-none d-sm-block"></div>
+
+                            <!-- Nav Item - User Information -->
+                            <div class="top" >
+                                <button ng-click = "logout()" class="btn btn-success pull-right">Logout</button>
+                            </div>
+
                         </ul>
                     </nav>
                     <!-- End of Topbar -->
@@ -114,11 +110,12 @@
 
                             
                             <div class="container-fluid">
-                                <!-- <div class="row">
-                                    <div class="col-md-8">
+                                <div class="card shadow mb-4">
+                                    <div class="card-header py-3">
+                                        <h6 class="m-0 font-weight-bold text-primary">Result</h6>
                                     </div>
-                                    <div class = "col-md-16">
-                                        <div> -->
+                                    <div class = "card-body">
+                                        
                                             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                                 <tr>
                                                     <th>title</th>
@@ -137,9 +134,9 @@
                                                     </label></td>
                                                 </tr>
                                             </table>
-                                        <!-- </div>
+                                        
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
                         </div>
                         

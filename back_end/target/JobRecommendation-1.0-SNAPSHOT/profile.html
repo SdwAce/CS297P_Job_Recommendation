@@ -43,25 +43,14 @@
                 </div> -->
 
                 <li class="nav-item active">
-                    <!-- <a class="nav-link" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true"
-                        aria-controls="collapsePages">
-                        <i class="fas fa-fw fa-folder"></i>
-                        <span>Pages</span>
-                    </a> -->
                     <div id="collapsePages" class="collapse show" aria-labelledby="headingPages"
-                        data-parent="#accordionSidebar">
+                    data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <!-- <h6 class="collapse-header">Login Screens:</h6> -->
-                            <!-- <a class="collapse-item" href="login.html">Login</a>
-                            <a class="collapse-item" href="register.html">Register</a>
-                            <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                            <div class="collapse-divider"></div>
-                            <h6 class="collapse-header">Other Pages:</h6> -->
-                            <a class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</a>
-                            <a class="collapse-item active" ng-click="display_history()">Favorite Jobs</a>
                             <a class="collapse-item active" ng-click="display_profile()">Profile</a>
                             <a class="collapse-item" href="search.html">Search</a>
-                            <a class="collapse-item active" href="Recommendation.html">Recommendation By Preference</a>
+                            <a class="collapse-item active" ng-click="display_history()">Favorite Jobs</a>
+                            <a class="collapse-item" ng-click="display_location_recommendation()">Recommend By Location</a>
+                            <a class="collapse-item active" href="Recommendation.html">Recommendation List</a>
                         </div>
                     </div>
                 </li>
@@ -97,34 +86,40 @@
 
                     <!-- Begin Page Content -->
                     <div class="container-fluid" >
-                        <h1>User Profile</h1>
-                        <form class="container-fluid">    
-                            <br>
-                            <label>Username:</label>
-                            <input type = "text" class="form-control" placeholder="Username" id="username" ng-model-instant>
-                            <br>
-                            <label>Email:</label>
-                            <input type = "text" class="form-control" placeholder="@uci.edu" id="email" ng-model-instant>
-                            <br>
-                            <label>Major:</label>
-                            <input type = "text" class="form-control" placeholder="Major" id="major" ng-model-instant>
-                            <br>
-                            <label for="grade">Grade Level: Undergrad or Grad</label>
-                            <select id="grade">
-                              <option id = "undergraduate" value="undergraduate">Undergrad</option>
-                              <option id = "graduate" value="graduate">Graduate</option>
-                            </select>
-                            <br>
-                            <label>Hired:</label>
-                            <select id="job_hired">
-                                <option id = "job_found" value="True">True</option>
-                                <option id = "job_not_found" value="False">False</option>
-                              </select>
-                            <br>
-                            
-                            <button class="btn btn-block btn-primary" ng-click="submit()">Submit</button>
-                        </form>
-
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h3 class="m-0 font-weight-bold text">User Information</h3>
+                            </div>
+                            <div class = "card-body">
+                                <form class="container-fluid">    
+                                    <br>
+                                    <label>Username:</label>
+                                    <input type = "text" class="form-control" placeholder="Username" id="username" ng-model-instant>
+                                    <br>
+                                    <label>Email:</label>
+                                    <input type = "text" class="form-control" placeholder="@uci.edu" id="email" ng-model-instant>
+                                    <br>
+                                    <label>Major:</label>
+                                    <input type = "text" class="form-control" placeholder="Major" id="major" ng-model-instant>
+                                    <br>
+                                    <label for="grade">Grade Level: Undergrad or Grad</label>
+                                    <select id="grade">
+                                    <option id = "undergraduate" value="undergraduate">Undergrad</option>
+                                    <option id = "graduate" value="graduate">Graduate</option>
+                                    </select>
+                                    <br>
+                                    <br>
+                                    <label>Hired:</label>
+                                    <select id="job_hired">
+                                        <option id = "job_found" value="True">True</option>
+                                        <option id = "job_not_found" value="False">False</option>
+                                    </select>
+                                    <br>
+                                    <br>
+                                    <button class="btn btn-block btn-primary" ng-click="submit()">Submit</button>
+                                </form>
+                            </div>
+                        </div>
                         <br>
                         <form class="container-fluid" action="submit" method="post" enctype="multipart/form-data">
                             Select File to Upload:<input type="file" name="fileName">
