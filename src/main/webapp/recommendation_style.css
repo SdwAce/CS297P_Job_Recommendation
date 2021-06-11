@@ -1,0 +1,26 @@
+#modal-body{
+  white-space: pre-line;
+}
+#peter{
+  float:center;
+  object-fit: scale-down;
+  width: 200px;
+  height: 200px;
+}
+
+.fancy-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.fancy-checkbox span:before {
+  font-family: "FontAwesome";
+  font-style: normal;
+  width: 1em;
+  height: 1em;
+  content: '\f004';
+  margin-right: .3em;
+}
+
+.fancy-checkbox input[type="checkbox"]:checked ~ span:before {
+  content: '\f004'; color: red;
+}

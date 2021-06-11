@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="CS297_Postgres" uuid="19c93aa7-8e56-48ca-acd0-6ff1d105fac9">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://database-1.crmpg9f2oru7.us-east-1.rds.amazonaws.com:5432/Users</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="CS297P" uuid="68b4c2cf-a35a-4015-bcf6-32d48691d04b">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://cs297-instance.ckjk7kzjfhir.us-east-1.rds.amazonaws.com:5432/CS297_Project</jdbc-url>
+    </data-source>
+  </component>
+</project>

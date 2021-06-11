@@ -1,0 +1,63 @@
+.search_form{
+  max-width: 600px;
+  margin: 1 auto;
+}
+
+#modal-body{
+  white-space: pre-line;
+}
+
+
+img{
+  float:right;
+  object-fit: scale-down;
+  width: 500px;
+  height: 400px;
+}
+
+#peter{
+  float:center;
+  object-fit: scale-down;
+  width: 200px;
+  height: 200px;
+}
+
+
+
+.ng-hide:not(.ng-hide-animate) {
+  /* These are just alternative ways of hiding an element */
+  display: block!important;
+  position: absolute;
+  top: -9999px;
+  left: -9999px;
+}
+
+.search_form h1{
+  text-align: center;
+  color: black;
+}
+
+.result_table {
+  table-layout: auto;
+  width: 100%;
+}
+
+.fancy-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.fancy-checkbox span:before {
+  font-family: "FontAwesome";
+  font-style: normal;
+  width: 1em;
+  height: 1em;
+  content: '\f004';
+  margin-right: .3em;
+}
+
+.fancy-checkbox input[type="checkbox"]:checked ~ span:before {
+  content: '\f004'; color: red;
+}
+
+
+/* Fix for Bootstrap 3 with Angular UI Bootstrap */

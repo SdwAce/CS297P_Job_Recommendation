@@ -1,0 +1,19 @@
+.search_form{
+    max-width: 400px;
+    margin: 1 auto;
+}
+
+.top{
+    background-color: cadetblue;
+    height: 48px;
+}
+
+.search_form h1{
+    text-align: center;
+    color: black;
+}
+
+.result_table {
+    table-layout: auto;
+    width: 100%;
+}
